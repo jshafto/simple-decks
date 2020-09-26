@@ -12,4 +12,4 @@ You can create new decks, edit, and delete them. Use markdown to compose your fl
 Use practice mode to study flashcards. Flip the cards, build your knowledge—no pressure.
 
 ### Quiz mode
-When you're up for a challenge, you can quiz yourself—try to beat your top score on that deck
+When you're up for a challenge, you can quiz yourself—try to beat your top score on that deck.
