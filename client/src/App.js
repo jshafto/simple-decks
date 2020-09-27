@@ -10,20 +10,10 @@ import Browse from './components/Browse';
 import NavBar from './components/NavBar';
 import HomePlex from './components/HomePlex';
 import AuthForm from './components/AuthForm';
+import Footer from './components/Footer';
 
 
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                simple decks
-        </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+
 
 function App() {
 
@@ -44,9 +34,7 @@ function App() {
                     </Route>
                 </Switch>
             </BrowserRouter>
-            <Box mt={8}>
-                <Copyright />
-            </Box>
+            <Footer />
         </>
     );
 }
