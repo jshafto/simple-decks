@@ -16,7 +16,7 @@ import { signup } from '../store/authentication';
 const useStyles = makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
-    // backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
   },
   form: {
     width: '100%', // Fix IE 11 issue.

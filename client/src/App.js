@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
-
+import Browse from './components/Browse'
 
 
 
@@ -35,36 +35,21 @@ function App() {
         <>
             <CssBaseline />
             <BrowserRouter>
-                {/* <nav>
-            <ul>
-                <li><NavLink to="/" activeClassName="active">Home</NavLink></li>
-                <li><NavLink to="/users" activeClassName="active">Users</NavLink></li>
-                <li><NavLink to="/login" activeClassName="active">Login</NavLink></li>
-                <LogoutButton />
-            </ul>
-        </nav> */}
+                <NavBar />
                 <Switch>
-                    {/* <Route path="/login">
-                    <SplashPage/>
-                </Route> */}
-                    <Route path="/signin">
+                    <Route exact path={["/signin", "/signup"]}>
                         <AuthForm />
                     </Route>
-                    <Route path="/signup">
-                        <AuthForm />
+                    <Route exact path="/browse">
+                        <Browse/>
                     </Route>
-
-                    {/* <Route path="/login">
-                <LoginForm />
-            </Route> */}
-
-                    <Route path="/">
+                    <Route exact path="/">
                         <HomePlex />
                     </Route>
                 </Switch>
             </BrowserRouter>
             <Box mt={8}>
-                <Copyright  />
+                <Copyright />
             </Box>
         </>
     );

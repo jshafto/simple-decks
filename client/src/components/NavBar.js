@@ -17,9 +17,9 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  // title: {
-  //   flexGrow: 1,
-  // },
+  title: {
+    flexGrow: 1,
+  },
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -71,7 +71,7 @@ const NavBar = () => {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-        <div className={classes.search}>
+          <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -84,13 +84,11 @@ const NavBar = () => {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
-          <IconButton edge="end" className={classes.menuButton} color="inherit" aria-label="menu">
+          <Typography className={classes.title} />
+          <LogoutButton className={classes.logoutButton} />
+          <IconButton className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
-          {/* <Typography variant="h6" className={classes.title}>
-            News
-          </Typography> */}
-          <LogoutButton className={classes.logoutButton} />
         </Toolbar>
       </AppBar>
     </div>

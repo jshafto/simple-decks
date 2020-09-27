@@ -3,7 +3,7 @@ import React from 'react';
 import DeckBrowser from './DeckBrowser';
 
 
-const Home = () => (
+const Browse = () => (
   <DeckBrowser/>
 )
-export default Home;
+export default Browse;
