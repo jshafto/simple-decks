@@ -1,6 +1,12 @@
 # simple decks
 Just flashcards. No frills. Study the information you want, your way. You know what you want to learn—we make it simple.
 
+## Technologies
+- Express
+- React/Redux
+- PostgreSQL
+- Material UI
+
 ## Features
 ### Browse public decks
 Explore flashcard decks that are publicly available. You can filter by category, or you can search for decks you're interested in.

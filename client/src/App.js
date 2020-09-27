@@ -1,19 +1,15 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
-import UserList from './components/UsersList';
-// import LoginForm from './components/LoginForm';
-// import LogoutButton from './components/LogoutButton'
-import NavBar from './components/NavBar'
-// import SplashPage from './components/SplashPage';
-import HomePlex from './components/HomePlex';
-import AuthForm from './components/AuthForm'
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import Browse from './components/Browse'
 
+import Browse from './components/Browse';
+import NavBar from './components/NavBar';
+import HomePlex from './components/HomePlex';
+import AuthForm from './components/AuthForm';
 
 
 function Copyright() {

@@ -1,8 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import { logout } from '../store/authentication';
+
 import Button from '@material-ui/core/Button';
+
+import { logout } from '../store/authentication';
 
 
 const LogoutButton = () => {
