@@ -1,37 +1,58 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route, NavLink } from 'react-router-dom';
 import UserList from './components/UsersList';
-import SignIn from './components/SignIn';
-import LogoutButton from './components/LogoutButton'
+// import LoginForm from './components/LoginForm';
+// import LogoutButton from './components/LogoutButton'
+import NavBar from './components/NavBar'
+// import SplashPage from './components/SplashPage';
+import HomePlex from './components/HomePlex';
+import AuthForm from './components/AuthForm'
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
+import Box from '@material-ui/core/Box';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import Browse from './components/Browse'
 
+
+
+function Copyright() {
+    return (
+        <Typography variant="body2" color="textSecondary" align="center">
+            {'Copyright © '}
+            <Link color="inherit" href="https://material-ui.com/">
+                simple decks
+        </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+        </Typography>
+    );
+}
 
 function App() {
 
-  return (
-    <BrowserRouter>
-        <nav>
-            <ul>
-                <li><NavLink to="/" activeClassName="active">Home</NavLink></li>
-                <li><NavLink to="/users" activeClassName="active">Users</NavLink></li>
-                <li><NavLink to="/login" activeClassName="active">Login</NavLink></li>
-                <LogoutButton />
-            </ul>
-        </nav>
-        <Switch>
-            <Route path="/users">
-                <UserList />
-            </Route>
-
-            <Route path="/login">
-                <SignIn />
-            </Route>
-
-            <Route path="/">
-                <h1>My Home Page</h1>
-            </Route>
-        </Switch>
-    </BrowserRouter>
-  );
+    return (
+        <>
+            <CssBaseline />
+            <BrowserRouter>
+                <NavBar />
+                <Switch>
+                    <Route exact path={["/signin", "/signup"]}>
+                        <AuthForm />
+                    </Route>
+                    <Route exact path="/browse">
+                        <Browse/>
+                    </Route>
+                    <Route exact path="/">
+                        <HomePlex />
+                    </Route>
+                </Switch>
+            </BrowserRouter>
+            <Box mt={8}>
+                <Copyright />
+            </Box>
+        </>
+    );
 }
 
 export default App;

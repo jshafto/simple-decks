@@ -2,20 +2,16 @@
 import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import SimpleLogo from './TestLogo'
 
-import { useDispatch,useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+
+import { useDispatch } from 'react-redux';
 import { login } from '../store/authentication';
 
 function Copyright() {
@@ -32,15 +28,9 @@ function Copyright() {
 }
 
 const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
   avatar: {
     margin: theme.spacing(1),
-    // backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.light,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -52,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoginForm = () => {
-  const currentUserId = useSelector(state => state.authentication.id)
   const [email, setEmail] = useState('demo@example.com');
   const [password, setPassword] = useState('password');
   const dispatch = useDispatch();
@@ -66,15 +55,10 @@ const LoginForm = () => {
   const updateEmail = e => setEmail(e.target.value);
   const updatePassword = e => setPassword(e.target.value);
 
-  if (currentUserId) {
-    return <Redirect to="/" />;
-  }
 
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
+      <>
         <Avatar className={classes.avatar}>
           <SimpleLogo/>
         </Avatar>
@@ -94,6 +78,8 @@ const LoginForm = () => {
             autoFocus
             value={email}
             onChange={updateEmail}
+            // error
+            // helperText set up helper text prop for errors
           />
           <TextField
             variant="outlined"
@@ -128,19 +114,15 @@ const LoginForm = () => {
               </Link>
             </Grid> */}
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
           </Grid>
         </form>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+      </>
   );
 }
 
 
-export default LoginForm
+export default LoginForm;
