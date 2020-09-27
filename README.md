@@ -1,5 +1,5 @@
 # simple decks
-Just flashcards. No frills. Study the information you want, your way. You know what you want to learn—we make it simple.
+Just flashcards. No frills. Study the information you want, your way. You know what you want to learn—we make it simple. Live app available [here](https://simple-decks.herokuapp.com/).
 
 ## Technologies
 - Express
