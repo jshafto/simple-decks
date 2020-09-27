@@ -83,15 +83,21 @@ const DeckBrowser = () => {
                     <Typography gutterBottom variant="h5" component="h2">
                       Deck name
                     </Typography>
-                    <Typography>
-                      Deck description
+                    <Typography gutterBottom>
+                      Score:
+                    </Typography>
+                    <Typography variant="caption">
+                      Created on [date]
                     </Typography>
                   </CardContent>
                   <CardActions>
                     <Button size="small" color="primary">
-                      View
+                      Practice
                     </Button>
                     <Button size="small" color="primary">
+                      Quiz
+                    </Button>
+                    <Button size="small" color="secondary">
                       Edit
                     </Button>
                   </CardActions>
