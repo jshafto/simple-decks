@@ -2,23 +2,21 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
-import Box from '@material-ui/core/Box';
+import { ThemeProvider } from '@material-ui/core/styles'
 
 import Browse from './components/Browse';
 import NavBar from './components/NavBar';
 import HomePlex from './components/HomePlex';
 import AuthForm from './components/AuthForm';
 import Footer from './components/Footer';
-
+import theme from './theme'
 
 
 
 function App() {
 
     return (
-        <>
+        <ThemeProvider theme={theme}>
             <CssBaseline />
             <BrowserRouter>
                 <NavBar />
@@ -27,7 +25,7 @@ function App() {
                         <AuthForm />
                     </Route>
                     <Route exact path="/browse">
-                        <Browse/>
+                        <Browse />
                     </Route>
                     <Route exact path="/">
                         <HomePlex />
@@ -35,7 +33,7 @@ function App() {
                 </Switch>
             </BrowserRouter>
             <Footer />
-        </>
+        </ThemeProvider>
     );
 }
 
