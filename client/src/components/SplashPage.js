@@ -1,21 +1,12 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Paper from '@material-ui/core/Paper';
 import Card from '@material-ui/core/Card';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import CardActions from '@material-ui/core/CardActions';
-import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import Container from '@material-ui/core/Container'
-import { spacing } from '@material-ui/system';
 
 
 
@@ -37,16 +28,14 @@ const useStyles = makeStyles((theme) => ({
 
   },
   formhalf: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   formcard: {
     alignItems: 'center',
-    justifyContent: 'center',
     margin: 'auto',
+    marginTop: '30px',
     maxWidth: '500px',
-    verticalAlign: 'middle',
-
   },
   paper: {
     margin: theme.spacing(4),
@@ -55,7 +44,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   browse: {
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(3)
   }
 }));
 
@@ -77,6 +67,7 @@ const SplashPage = () => {
             variant="contained"
             color="primary"
             href="/browse"
+            size="large"
             >
             Browse decks</Button>
 

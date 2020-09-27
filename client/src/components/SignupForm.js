@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
+import { useDispatch } from 'react-redux';
+
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import SimpleLogo from './TestLogo'
+import SvgIcon from '@material-ui/core/SvgIcon';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import { signup } from '../store/authentication';
+import SvgLogo from './SvgLogo';
 
 
 const useStyles = makeStyles((theme) => ({
-  avatar: {
+  logoicon: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.primary.main,
+    fill: theme.palette.text.primary,
+    stroke: theme.palette.text.primary
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -47,16 +48,15 @@ const SignupForm = () => {
 
 
   return (
-    // <Container component="main" maxWidth="xs">
     <>
-      <Avatar className={classes.avatar}>
-        <SimpleLogo />
-      </Avatar>
+      <SvgIcon className={classes.logoicon}>
+        <SvgLogo />
+      </SvgIcon>
       <Typography component="h1" variant="h5">
         Sign Up
         </Typography>
       <form className={classes.form} onSubmit={handleSubmit}>
-      <TextField
+        <TextField
           variant="outlined"
           margin="normal"
           required
@@ -95,10 +95,6 @@ const SignupForm = () => {
           value={password}
           onChange={updatePassword}
         />
-        {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
         <Button
           type="submit"
           fullWidth
@@ -109,11 +105,6 @@ const SignupForm = () => {
           Sign Up
           </Button>
         <Grid container>
-          {/* <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid> */}
           <Grid item>
             <Link href="/signin" variant="body2">
               {"Already have an account? Sign In"}
