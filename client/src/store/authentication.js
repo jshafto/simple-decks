@@ -3,6 +3,7 @@ import {apiUrl} from '../config'
 
 export const SET_USER = 'simple-decks/authentication/SET_USER';
 export const REMOVE_USER = 'simple-decks/authentication/REMOVE_USER';
+export const CREATE_USER = 'simple-decks/authentication/CREATE_USER';
 
 export const removeUser = () => ({
   type: REMOVE_USER,
@@ -12,6 +13,11 @@ export const setUser = user => ({
   type: SET_USER,
   user,
 });
+
+export const createUser = user => ({
+  type: CREATE_USER,
+  user,
+})
 
 export const login = (email, password) => async dispatch => {
   const response = await fetch(`${apiUrl}/session`, {
@@ -38,6 +44,18 @@ export const logout = () => async (dispatch) => {
   }
 };
 
+export const signup = (username, email, password) => async dispatch => {
+  const response = await fetch(`${apiUrl}/users`, {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, email, password }),
+  });
+  if (response.ok) {
+    const { user } = await response.json();
+    dispatch(createUser(user));
+  }
+}
+
 function loadUser() {
   const authToken = Cookies.get("token");
   if (authToken) {
@@ -58,6 +76,9 @@ const authReducer = (state = loadUser(), action) => {
   switch (action.type) {
     case SET_USER: {
       return action.user
+    }
+    case CREATE_USER: {
+      return action.user;
     }
     case REMOVE_USER: {
       return {};
