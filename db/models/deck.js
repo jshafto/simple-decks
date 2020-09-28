@@ -9,11 +9,16 @@ module.exports = (sequelize, DataTypes) => {
   Deck.associate = function(models) {
     // associations can be defined here
     Deck.belongsTo(models.Category, {foreignKey: "categoryId"});
-    Deck.belongsTo(models.User, { foreignKey: "hostId" })
+    Deck.belongsTo(models.User, { foreignKey: "userId" })
     Deck.hasMany(models.Score, {
       foreignKey: "deckId",
       onDelete: "cascade"
     })
+    Deck.hasMany(models.Card, {
+      foreignKey: "deckId",
+      onDelete: "cascade"
+  })
+
   };
   return Deck;
 };

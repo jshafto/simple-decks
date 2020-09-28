@@ -9,7 +9,9 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       label: {
-        type: Sequelize.STRING
+        allowNull: false,
+        unique: true,
+        type: Sequelize.STRING(50)
       },
       createdAt: {
         allowNull: false,

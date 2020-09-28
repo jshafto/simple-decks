@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     deckId: DataTypes.INTEGER
   }, {});
   Card.associate = function(models) {
-    // associations can be defined here
+    Card.belongsTo(models.Deck, {foreignKey: 'deckId'})
   };
   return Card;
 };
