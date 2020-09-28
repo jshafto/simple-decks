@@ -25,18 +25,24 @@ const deckNotFoundError = (id) => {
 
 // does not require auth
 router.get('/', asyncHandler(async (req, res, next) => {
+  let query = (req.query.q) ? req.query.q : '';
+  let offset = (req.query.offset) ? req.query.offset : 0;
   const decks = await Deck.findAll({
-    limit: 20,
+    limit: 10,
+    offset,
     include: [{
       model: Category
     },
     {
       model: Card,
-      attributes: ["id"],
+      attributes: ["id"]
     }],
     where: {
       private: {
         [Op.is]: false,
+      },
+      name: {
+        [Op.iLike]: `%${query}%`
       }
     },
   })
@@ -56,7 +62,7 @@ router.post('/', authenticated, deckValidators, asyncHandler(async (req, res, ne
 
 
 // requires auth (user id must match deck's creator)
-router.delete('/:deckId', authenticated, asyncHandler(async (req, res, next) => {
+router.delete('/:deckId(\\d+)', authenticated, asyncHandler(async (req, res, next) => {
   const deckId = req.params.id;
   const deck = await Deck.findByPk(deckId);
   if (req.user.id !== deck.userId) {
@@ -76,7 +82,7 @@ router.delete('/:deckId', authenticated, asyncHandler(async (req, res, next) => 
 
 
 // requires auth on private decks
-router.get('/:deckId', userInfo, asyncHandler(async (req, res, next) => {
+router.get('/:deckId(\\d+)', userInfo, asyncHandler(async (req, res, next) => {
   const deckId = req.params.deckId;
   const deck = await Deck.findByPk(deckId, {
     include: [{
@@ -127,5 +133,7 @@ router.put('/:deckId', userInfo, asyncHandler(async (req, res, next) => {
     next(deckNotFoundError(deckId));
   }
 }))
+
+
 
 module.exports = router;
