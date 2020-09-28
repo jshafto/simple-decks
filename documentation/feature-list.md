@@ -1,5 +1,6 @@
 # Features
 ## Browse Decks
+  -
 
 ## Create Decks
 
@@ -18,18 +19,19 @@
 | `/browse`| Public decks | renders a collection of recent decks                          |
 
 ## API Endpoints
-| Path                   | Method   | Result                           |
-|------------------------|----------|----------------------------------|
-| `/api/session`         | `POST`   | login                            |
-| `/api/session`         | `DELETE` | logout                           |
-| `/api/decks`           | `GET`    | a collection of decks (limit 20) |
-| `/api/decks`           | `POST`   | creates a new deck               |
-| `/api/decks/:id`       | `GET`    | returns deck with cards          |
-| `/api/decks/:id`       | `DELETE` | deletes a deck                   |
-| `/api/cards`           | `POST`   | creates a new card               |
-| `/api/cards/:id`       | `PUT`    | updates an existing card         |
-| `/api/cards/:id`       | `DELETE` | deletes a card                   |
-| `/api/users/:id/decks` | `DELETE` | deletes a card                   |
+| Path                        | Method   | Result                           |
+|-----------------------------|----------|----------------------------------|
+| `/api/session`              | `POST`   | login                            |
+| `/api/session`              | `DELETE` | logout                           |
+| `/api/decks`                | `GET`    | a collection of decks (limit 20) |
+| `/api/decks`                | `POST`   | creates a new deck               |
+| `/api/decks/:id`            | `GET`    | returns deck with cards          |
+| `/api/decks/:id`            | `DELETE` | deletes a deck (and cards)       |
+| `/api/cards`                | `POST`   | creates a new card               |
+| `/api/cards/:id`            | `PUT`    | updates an existing card         |
+| `/api/cards/:id`            | `DELETE` | deletes a card                   |
+| `/api/users/:id/decks`      | `DELETE` | deletes a card                   |
+| `/api/categories/:id/decks` | `GET`    | get all decks from category                  |
 
 
 # State shape

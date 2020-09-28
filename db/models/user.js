@@ -30,6 +30,14 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   User.associate = function(models) {
+    User.hasMany(models.Deck, {
+      foreignKey: "userId",
+      onDelete: "cascade"
+    });
+    User.hasMany(models.Score, {
+      foreignKey: "userId",
+      onDelete: "cascade"
+    });
   };
 
   User.prototype.isValid = () => true;
