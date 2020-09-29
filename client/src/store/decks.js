@@ -16,29 +16,31 @@ export const loadPublicDecks = (decks) => ({
 // thunk for getting public decks
 export const loadPublicDecksThunk = () => async dispatch => {
   const res = await fetch(`${apiUrl}/decks`);
-  const data = await res.json();
-  const decks = {};
-  data.forEach(deck => {
-    const { id, name, categoryId, userId, createdAt, updatedAt} = deck;
-    const privacy = deck.private;
-    const numCards = deck.Cards.length;
-    const category = deck.Category.label;
-    const creator = deck.User.username;
-    const maxScore = (deck.Scores.length) ? Math.max(deck.Scores) :null;
-    decks[id] = {
-      id,
-      name,
-      categoryId,
-      creatorId: userId,
-      privacy,
-      numCards,
-      category,
-      creator,
-      maxScore,
-      createdAt,
-      updatedAt,
-    }
-  })
+  const decks= await res.json();
+  // const decks = {};
+  // data.forEach(deck => decks[deck.id] = deck);
+  // const decks = {};
+  // data.forEach(deck => {
+  //   const { id, name, categoryId, userId, createdAt, updatedAt} = deck;
+  //   const privacy = deck.private;
+  //   const numCards = deck.Cards.length;
+  //   const category = deck.Category.label;
+  //   const creator = deck.User.username;
+  //   const maxScore = (deck.Scores.length) ? Math.max(deck.Scores) :null;
+  //   decks[id] = {
+  //     id,
+  //     name,
+  //     categoryId,
+  //     creatorId: userId,
+  //     privacy,
+  //     numCards,
+  //     category,
+  //     creator,
+  //     maxScore,
+  //     createdAt,
+  //     updatedAt,
+  //   }
+  // })
   dispatch(loadPublicDecks(decks));
 }
 

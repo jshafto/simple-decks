@@ -9,7 +9,6 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 
 import { loadPublicDecksThunk } from '../store/decks';
 
@@ -24,10 +23,6 @@ const useStyles = makeStyles((theme) => ({
   },
   deckContent: {
     flexGrow: 1,
-  },
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(6),
   },
 }));
 
@@ -52,7 +47,7 @@ const DeckCollection = () => {
                 {deck.name}
               </Typography>
               <Typography gutterBottom>
-                {(deck.maxScore) ? `No previous scores` : `Best Score: ${deck.maxScore}`}
+                {(!deck.maxScore) ? `No previous scores` : `Best Score: ${deck.maxScore}`}
               </Typography>
               <Typography variant="caption">
                 {`Created by ${deck.creator} on ${deck.createdAt}`}
@@ -61,13 +56,13 @@ const DeckCollection = () => {
             <CardActions>
               <Button size="small" color="primary">
                 Practice
-                    </Button>
+              </Button>
               <Button size="small" color="primary">
                 Quiz
-                    </Button>
+              </Button>
               <Button size="small" color="secondary">
                 Edit
-                    </Button>
+              </Button>
             </CardActions>
           </Card>
         </Grid>

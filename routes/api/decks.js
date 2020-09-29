@@ -2,7 +2,8 @@ const express = require('express');
 const asyncHandler = require('express-async-handler');
 const { Deck, Category, Card, User, Score } = require('../../db/models');
 const { check, validationResult } = require('express-validator');
-const { Op } = require('sequelize');
+const Sequelize = require('sequelize');
+const { Op } = Sequelize;
 const { authenticated, userInfo } = require('./security-utils');
 const score = require('../../db/models/score');
 
@@ -33,16 +34,19 @@ router.get('/', userInfo, asyncHandler(async (req, res, next) => {
   let query = (req.query.q) ? req.query.q : '';
   let offset = (req.query.offset) ? req.query.offset : 0;
   let userId = (req.user) ? req.user.id : null;
-  const decks = await Deck.findAll({
+  const dbDecks = await Deck.findAll({
     limit: 10,
     offset,
     include: [{
-      model: Category,
-      attributes: ["label"]
+      model: Category
     },
     {
       model: Card,
-      attributes: ["id"] //would prefer to replace this with a count
+      attributes: ["id"]
+    },
+    {
+      model: User,
+      attributes: ["username"]
     },
     {
       model: Score,
@@ -50,11 +54,7 @@ router.get('/', userInfo, asyncHandler(async (req, res, next) => {
         userId
       },
       required: false,
-    },
-    {
-      model: User,
-      attributes: ["username"]
-    },
+    }
   ],
     where: {
       private: {
@@ -65,6 +65,29 @@ router.get('/', userInfo, asyncHandler(async (req, res, next) => {
       }
     },
   })
+  const decks = {};
+  dbDecks.forEach(deck => {
+    const { id, name, categoryId, userId, createdAt, updatedAt} = deck;
+    const privacy = deck.private;
+    const numCards = deck.Cards.length;
+    const category = deck.Category.label;
+    const creator = deck.User.username;
+    const maxScore = (deck.Scores.length) ? Math.max(deck.Scores) :null;
+    decks[id] = {
+      id,
+      name,
+      categoryId,
+      creatorId: userId,
+      privacy,
+      numCards,
+      category,
+      creator,
+      maxScore,
+      createdAt,
+      updatedAt,
+    }
+  })
+
   res.json(decks);
 }))
 
