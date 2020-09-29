@@ -20,6 +20,14 @@ module.exports = {
         references: { model: "Decks" },
         onDelete: 'cascade'
       },
+      hits: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+      total: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
