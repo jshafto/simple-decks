@@ -47,6 +47,42 @@ function restoreUser(req, res, next) {
   });
 }
 
-const authenticated = [restoreUser];
+// this function is for routes that need to have the user's
+// id when they're logged in, but that can also be accessed publicly
+// specifically, users can 'GET' their own decks, and users/guests can 'GET'
+// anyone's public decks.
+function restoreUserIfPossible(req, res, next) {
+  const { token } = req.cookies;
 
-module.exports = { generateToken, authenticated };
+
+  if (!token) {
+    return next();
+  }
+
+  return jwt.verify(token, secret, null, async (err, payload) => {
+    if (err) {
+      return next();
+    }
+
+    const tokenId = payload.jti;
+
+    try {
+      req.user = await UserUtils.findByTokenId(tokenId);
+    } catch (e) {
+      res.clearCookie("token");
+      return next();
+    }
+
+    if (!req.user.isValid()) {
+      res.clearCookie("token");
+      return next();
+    }
+
+    next();
+  });
+}
+
+const authenticated = [restoreUser];
+const userInfo = [restoreUserIfPossible]
+
+module.exports = { generateToken, authenticated, userInfo};
