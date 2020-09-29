@@ -1,6 +1,6 @@
 const express = require('express');
 const asyncHandler = require('express-async-handler');
-const { Deck, Category, Card, Score } = require('../../db/models');
+const { Deck, Category, Card, User, Score } = require('../../db/models');
 const { check, validationResult } = require('express-validator');
 const { Op } = require('sequelize');
 const { authenticated, userInfo } = require('./security-utils');
@@ -37,11 +37,12 @@ router.get('/', userInfo, asyncHandler(async (req, res, next) => {
     limit: 10,
     offset,
     include: [{
-      model: Category
+      model: Category,
+      attributes: ["label"]
     },
     {
       model: Card,
-      attributes: ["id"]
+      attributes: ["id"] //would prefer to replace this with a count
     },
     {
       model: Score,
@@ -49,7 +50,11 @@ router.get('/', userInfo, asyncHandler(async (req, res, next) => {
         userId
       },
       required: false,
-    }
+    },
+    {
+      model: User,
+      attributes: ["username"]
+    },
   ],
     where: {
       private: {

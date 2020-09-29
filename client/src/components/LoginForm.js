@@ -1,4 +1,3 @@
-// material ui template
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from '../store/authentication';
@@ -31,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoginForm = () => {
-  const [email, setEmail] = useState('demo@example.com');
-  const [password, setPassword] = useState('password');
+  const [email, setEmail] = useState('demoaccount@example.com');
+  const [password, setPassword] = useState('somethingmoresecurethanpassword');
   const dispatch = useDispatch();
   const classes = useStyles();
 

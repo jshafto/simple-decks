@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import {apiUrl} from '../config'
+import { apiUrl } from '../config';
 
 export const SET_USER = 'simple-decks/authentication/SET_USER';
 export const REMOVE_USER = 'simple-decks/authentication/REMOVE_USER';
