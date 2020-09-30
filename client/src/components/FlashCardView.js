@@ -10,8 +10,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button'
+import EditIcon from '@material-ui/icons/Edit';
+import CloseIcon from '@material-ui/icons/Close'
+import IconButton from '@material-ui/core/IconButton'
 
-import { loadCardsThunk } from '../store/cards'
+import { loadCardsThunk } from '../store/cards';
+import { openModal } from '../store/ui';
+import NewCardModal from './NewCardModal';
 
 // import ReactMarkdown from 'react-markdown';
 import Markdown from 'markdown-to-jsx';
@@ -22,18 +27,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// const flashcards = [
-//   {id: 1, front: 'this is the front of a card', back: 'this is the back of a card'},
-//   {id: 2, front: 'this is the front of a card', back: 'this is the back of a card'},
-//   {id: 3, front: 'this is the front of a card', back: 'this is the back of a card'},
-//   {id: 4, front: 'this is the front of a card', back: 'this is the back of a card but long. this is the back of a card but long. this is the back of a card but long. this is the back of a card but long. '},
-// ]
 
 const FlashCardView = () => {
   const classes = useStyles();
   const { deckId } = useParams();
 
-  const flashcards = useSelector(state => state.cards.byId);
+  const flashcards = useSelector(state => state.entities.cards.byId);
+
 
   const dispatch = useDispatch();
   // console.log(deckId)
@@ -41,6 +41,10 @@ const FlashCardView = () => {
   useEffect(() => {
     dispatch(loadCardsThunk(deckId))
   }, [deckId])
+
+  const handleClickOpen = () => {
+    dispatch(openModal(true));
+  }
 
 
   return (
@@ -50,7 +54,9 @@ const FlashCardView = () => {
         <TableRow>
           <TableCell align="left" width="40%">Front</TableCell>
           <TableCell align="left" width="40%">Back</TableCell>
-          <TableCell></TableCell>
+          <TableCell>
+            <NewCardModal />
+          </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -62,16 +68,19 @@ const FlashCardView = () => {
             <TableCell align="left">
               <Markdown>{flashcard.back}</Markdown>
             </TableCell>
-            <TableCell align="left" size="small">
-              <Button color="secondary">
-                Edit Card
-                </Button>
+            <TableCell align="right" size="small" style={{ verticalAlign: 'top' }}>
+              <IconButton>
+                <EditIcon />
+              </IconButton>
+            <IconButton>
+                <CloseIcon />
+              </IconButton>
             </TableCell>
           </TableRow>
         ))}
         <TableRow>
           <TableCell align="center" colSpan={3}>
-            <Button color="primary" size='large' variant='contained'>
+            <Button color="primary" size='large' variant='contained' onClick={handleClickOpen}>
               Add card
             </Button>
           </TableCell>

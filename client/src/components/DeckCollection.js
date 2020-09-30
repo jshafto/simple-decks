@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 const DeckCollection = () => {
   const classes = useStyles();
-  const deckCollection = useSelector(state => state.decks.byId);
+  const deckCollection = useSelector(state => state.entities.decks.byId);
 
 
 

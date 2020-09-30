@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {useParams} from 'react-router-dom'
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -9,7 +11,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 
 
+import { formatRelative } from 'date-fns';
+
 import FlashCardView from './FlashCardView';
+import { loadDeckThunk } from '../store/decks';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -34,6 +39,16 @@ const DeckViewEdit = () => {
 
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+
+  const { deckId } = useParams();
+
+  const deck = useSelector(state => state.entities.decks.activeDeck);
+
+  useEffect(() => {
+    dispatch(loadDeckThunk(deckId));
+  }, [])
+
 
 
 
@@ -42,10 +57,13 @@ const DeckViewEdit = () => {
       <div className={classes.heroContent}>
         <Container>
           <Typography component="h1" variant="h3" align="left" color="textPrimary" gutterBottom>
-            Deck name.
+            {deck.name}
           </Typography>
           <Typography variant="h5" align="left" color="textSecondary" paragraph>
-            Deck category
+            {deck.category}
+          </Typography>
+          <Typography variant="h6" align="left" color="textSecondary" paragraph>
+          {(deck.createdAt) ? `Created by ${deck.creator} ${formatRelative(new Date(deck.createdAt), new Date())}` : `Created by`}
           </Typography>
           <div className={classes.heroButtons}>
             <Grid container spacing={2} >

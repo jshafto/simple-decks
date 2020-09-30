@@ -67,7 +67,7 @@ export const createDeckThunk = (data) => async dispatch => {
 
 
 //
-export default function reducer(state = { byId: {} }, action) {
+export default function reducer(state = { byId: {}, activeDeck: {} }, action) {
   switch (action.type) {
     case LOAD_DECKS: {
       return { ...state, byId: action.decks };

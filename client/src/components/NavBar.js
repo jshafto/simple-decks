@@ -1,5 +1,5 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -80,7 +80,7 @@ const NavBar = () => {
         <Toolbar>
           <IconButton component={NavLink} to="/">
             <SvgIcon className={classes.logoicon}>
-              <SvgLogo/>
+              <SvgLogo />
             </SvgIcon>
           </IconButton>
           <div className={classes.search}>

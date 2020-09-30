@@ -55,7 +55,7 @@ router.get('/', userInfo, asyncHandler(async (req, res, next) => {
       },
       required: false,
     }
-  ],
+    ],
     where: {
       private: {
         [Op.is]: false,
@@ -67,12 +67,12 @@ router.get('/', userInfo, asyncHandler(async (req, res, next) => {
   })
   const decks = {};
   dbDecks.forEach(deck => {
-    const { id, name, categoryId, userId, createdAt, updatedAt} = deck;
+    const { id, name, categoryId, userId, createdAt, updatedAt } = deck;
     const privacy = deck.private;
     const numCards = deck.Cards.length;
     const category = deck.Category.label;
     const creator = deck.User.username;
-    const maxScore = (deck.Scores.length) ? Math.max(deck.Scores) :null;
+    const maxScore = (deck.Scores.length) ? Math.max(deck.Scores) : null;
     decks[id] = {
       id,
       name,
@@ -127,21 +127,40 @@ router.delete('/:deckId(\\d+)', authenticated, asyncHandler(async (req, res, nex
 // requires auth on private decks
 router.get('/:deckId(\\d+)', userInfo, asyncHandler(async (req, res, next) => {
   const deckId = req.params.deckId;
-  const deck = await Deck.findByPk(deckId, {
+  let currentUserId = (req.user) ? req.user.id : null;
+  const dbDeck = await Deck.findByPk(deckId, {
     include: [{
       model: Category
     },
     {
       model: Card,
-    }],
+      attributes: ["id"]
+    },
+    {
+      model: User,
+      attributes: ["username"]
+    },
+    {
+      model: Score,
+      where: {
+        userId: currentUserId
+      },
+      required: false,
+    }
+    ],
+    where: {
+      private: {
+        [Op.is]: false,
+      },
+    },
   });
 
-  if (!deck) {
+  if (!dbDeck) {
     next(deckNotFoundError(deckId));
   }
 
-  if (deck.private) {
-    if (!req.user || req.user.id !== deck.userId) {
+  if (dbDeck.private) {
+    if (!req.user || currentUserId !== dbDeck.userId) {
       const err = new Error("Unauthorized");
       err.status = 401;
       err.message = "You are not authorized to access this deck.";
@@ -149,7 +168,28 @@ router.get('/:deckId(\\d+)', userInfo, asyncHandler(async (req, res, next) => {
       throw err;
     }
   }
-  res.json({ deck });
+
+  const { id, name, categoryId, userId, createdAt, updatedAt } = dbDeck;
+  const privacy = dbDeck.private;
+  const numCards = dbDeck.Cards.length;
+  const category = dbDeck.Category.label;
+  const creator = dbDeck.User.username;
+  const maxScore = (dbDeck.Scores.length) ? Math.max(dbDeck.Scores) : null;
+  const deck = {
+    id,
+    name,
+    categoryId,
+    creatorId: userId,
+    privacy,
+    numCards,
+    category,
+    creator,
+    maxScore,
+    createdAt,
+    updatedAt,
+  }
+
+  res.json( deck );
 }))
 
 
@@ -157,7 +197,7 @@ router.get('/:deckId(\\d+)', userInfo, asyncHandler(async (req, res, next) => {
 // requires auth for private decks
 router.get('/:deckId(\\d+)/cards', userInfo, asyncHandler(async (req, res, next) => {
   const deckId = req.params.deckId;
-  const deck= await Deck.findByPk(deckId, {
+  const deck = await Deck.findByPk(deckId, {
     include: [{
       model: Card
     },],
@@ -208,14 +248,15 @@ router.put('/:deckId(\\d+)', userInfo, asyncHandler(async (req, res, next) => {
 
 
 // creating a new card in a deck
-router.post('/decks/:deckId(\\d+)/cards', authenticated, cardValidators, asyncHandler(async (req, res, next) => {
+router.post('/:deckId(\\d+)/cards', authenticated, cardValidators, asyncHandler(async (req, res, next) => {
+  // res.json({hi: 'hi'})
   const errors = validationResult(req).formatWith(errorFormatter);
   if (!errors.isEmpty()) {
     return next({ status: 422, errors: errors.array() });
   }
   const { front, back } = req.body;
   const card = await Card.create({ front, back, deckId: req.params.deckId });
-  res.json({ card });
+  res.json(card );
 }))
 
 

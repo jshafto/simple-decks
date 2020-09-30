@@ -79,7 +79,6 @@ const SignupForm = () => {
           label="Email Address"
           name="email"
           autoComplete="email"
-          autoFocus
           value={email}
           onChange={updateEmail}
         />
