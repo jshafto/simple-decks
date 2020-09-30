@@ -152,6 +152,35 @@ router.get('/:deckId(\\d+)', userInfo, asyncHandler(async (req, res, next) => {
   res.json({ deck });
 }))
 
+
+// get all cards from a particular deck
+// requires auth for private decks
+router.get('/:deckId(\\d+)/cards', userInfo, asyncHandler(async (req, res, next) => {
+  const deckId = req.params.deckId;
+  const deck= await Deck.findByPk(deckId, {
+    include: [{
+      model: Card
+    },],
+  });
+
+  if (!deck) {
+    next(deckNotFoundError(deckId));
+  }
+
+  if (deck.private) {
+    if (!req.user || req.user.id !== deck.userId) {
+      const err = new Error("Unauthorized");
+      err.status = 401;
+      err.message = "You are not authorized to access this deck.";
+      err.title = "Unauthorized";
+      throw err;
+    }
+  }
+  const cards = {};
+  deck.Cards.forEach(card => cards[card.id] = card)
+  res.json(cards);
+}))
+
 // for editing deck info - have not tested
 router.put('/:deckId(\\d+)', userInfo, asyncHandler(async (req, res, next) => {
   const deckId = req.params.deckId;
