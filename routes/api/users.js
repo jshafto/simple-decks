@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 const { check, validationResult } = require('express-validator');
 const UserUtils = require('../../db/user-utils');
 const { authenticated, generateToken } = require('./security-utils');
-const { User, Deck, Score } = require('../../db/models');
+const { User, Deck, Score, Category, Card } = require('../../db/models');
 const { handleValidationErrors } = require('./utils');
 const bcrypt = require('bcryptjs');
 
@@ -60,7 +60,7 @@ router.post(
 router.get('/me/decks', authenticated, asyncHandler(async (req, res, next) => {
   let offset = (req.query.offset) ? req.query.offset : 0;
   let userId = req.user.id;
-  const decks = await Deck.findAll({
+  const dbDecks = await Deck.findAll({
     limit: 10,
     offset,
     include: [{
@@ -76,8 +76,38 @@ router.get('/me/decks', authenticated, asyncHandler(async (req, res, next) => {
         userId
       },
       required: false,
+    },
+    {
+      model: User,
+      attributes: ["username"]
+
+    }],
+    where: {
+      userId
     }
-    ],
+  })
+
+  const decks = {};
+  dbDecks.forEach(deck => {
+    const { id, name, categoryId, userId, createdAt, updatedAt} = deck;
+    const privacy = deck.private;
+    const numCards = deck.Cards.length;
+    const category = deck.Category.label;
+    const creator = deck.User.username;
+    const maxScore = (deck.Scores.length) ? Math.max(deck.Scores) :null;
+    decks[id] = {
+      id,
+      name,
+      categoryId,
+      creatorId: userId,
+      privacy,
+      numCards,
+      category,
+      creator,
+      maxScore,
+      createdAt,
+      updatedAt,
+    }
   })
   res.json(decks);
 }))
@@ -88,8 +118,8 @@ router.post('/me/decks/:deckId(\\d+)/scores', authenticated, asyncHandler(async 
   const deckId = req.params.id;
   const userId = req.user.id;
   const { hits, total } = req.body;
-  const score = await Score.create({deckId, userId, hits, total})
-  res.json({score});
+  const score = await Score.create({ deckId, userId, hits, total })
+  res.json({ score });
 }))
 
 
