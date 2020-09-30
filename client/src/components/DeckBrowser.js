@@ -10,6 +10,7 @@ import Container from '@material-ui/core/Container';
 import DeckCollection from './DeckCollection'
 import { loadPublicDecksThunk } from '../store/decks';
 
+
 const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: theme.spacing(2),
@@ -35,36 +36,39 @@ const DeckBrowser = () => {
     dispatch(loadPublicDecksThunk());
   }, []);
 
+  // useHistory
+
   return (
-      <main>
-        <div className={classes.heroContent}>
-          <Container maxWidth="md">
-            <Typography component="h1" variant="h2" align="left" color="textPrimary" gutterBottom>
-              Deck Collection.
+    <main>
+      <div className={classes.heroContent}>
+        <Container maxWidth="md">
+          <Typography component="h1" variant="h2" align="left" color="textPrimary" gutterBottom>
+            Deck Collection.
             </Typography>
-            <Typography variant="h5" align="left" color="textSecondary" paragraph>
-              This is a collection of decks.
+          <Typography variant="h5" align="left" color="textSecondary" paragraph>
+            This is a collection of decks.
             </Typography>
-            <div className={classes.heroButtons}>
-              <Grid container spacing={2} >
-                <Grid item>
-                  <Button variant="contained" color="primary">
-                    Create a new deck
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button variant="outlined" color="primary">
-                    Browse public decks
-                  </Button>
-                </Grid>
+          <div className={classes.heroButtons}>
+            <Grid container spacing={2} >
+              <Grid item>
+
+                <Button variant="contained" color="primary">
+                  Create a new deck
+                    </Button>
               </Grid>
-            </div>
-          </Container>
-        </div>
-        <Container className={classes.cardGrid} maxWidth="md">
-          <DeckCollection />
+              <Grid item>
+                <Button variant="outlined" color="primary">
+                  Browse public decks
+                  </Button>
+              </Grid>
+            </Grid>
+          </div>
         </Container>
-      </main>
+      </div>
+      <Container className={classes.cardGrid} maxWidth="md">
+        <DeckCollection />
+      </Container>
+    </main>
 
   );
 }

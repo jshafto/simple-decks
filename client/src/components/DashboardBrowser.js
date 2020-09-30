@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
+import {NavLink} from 'react-router-dom';
+
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -51,7 +53,7 @@ const DashboardBrowser = () => {
                   </Button>
                 </Grid>
                 <Grid item>
-                  <Button variant="outlined" color="primary">
+                  <Button component={NavLink} to="/browse" variant="outlined" color="primary">
                     Browse public decks
                   </Button>
                 </Grid>

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -58,7 +59,7 @@ const DeckCollection = () => {
               <Button size="small" color="primary">
                 Quiz
               </Button>
-              <Button size="small" color="secondary" href={`/decks/${deck.id}`}>
+              <Button size="small" color="secondary" component={NavLink} to={`/decks/${deck.id}`}>
                 View
               </Button>
             </CardActions>
