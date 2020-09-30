@@ -9,11 +9,12 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import TableFooter from '@material-ui/core/TableFooter'
 import Button from '@material-ui/core/Button'
 
 import { loadCardsThunk } from '../store/cards'
 
+// import ReactMarkdown from 'react-markdown';
+import Markdown from 'markdown-to-jsx';
 
 const useStyles = makeStyles((theme) => ({
   table: {
@@ -55,8 +56,12 @@ const FlashCardView = () => {
       <TableBody>
         {Object.values(flashcards).map((flashcard) => (
           <TableRow key={flashcard.id}>
-            <TableCell align="left">{flashcard.front}</TableCell>
-            <TableCell align="left">{flashcard.back}</TableCell>
+            <TableCell align="left">
+              <Markdown>{flashcard.front}</Markdown>
+            </TableCell>
+            <TableCell align="left">
+              <Markdown>{flashcard.back}</Markdown>
+            </TableCell>
             <TableCell align="left" size="small">
               <Button color="secondary">
                 Edit Card

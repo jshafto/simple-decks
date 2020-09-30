@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import DeckCollection from './DeckCollection'
-import { loadPublicDecksThunk } from '../store/decks';
+import { loadOwnDecksThunk } from '../store/decks';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -27,23 +27,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DeckBrowser = () => {
+const DashboardBrowser = () => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(loadPublicDecksThunk());
+    dispatch(loadOwnDecksThunk());
   }, []);
+
 
   return (
       <main>
         <div className={classes.heroContent}>
           <Container maxWidth="md">
             <Typography component="h1" variant="h2" align="left" color="textPrimary" gutterBottom>
-              Deck Collection.
-            </Typography>
-            <Typography variant="h5" align="left" color="textSecondary" paragraph>
-              This is a collection of decks.
+              My Decks
             </Typography>
             <div className={classes.heroButtons}>
               <Grid container spacing={2} >
@@ -69,4 +67,4 @@ const DeckBrowser = () => {
   );
 }
 
-export default DeckBrowser;
+export default DashboardBrowser;
