@@ -60,7 +60,7 @@ const DeckCollection = () => {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small" color="primary">
+              <Button size="small" color="primary" component={NavLink} to={`/practice/${deck.id}`}>
                 Practice
               </Button>
               <Button size="small" color="primary">
