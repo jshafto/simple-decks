@@ -11,6 +11,8 @@ import Container from '@material-ui/core/Container';
 
 import DeckCollection from './DeckCollection'
 import { loadOwnDecksThunk } from '../store/decks';
+import { openModal } from '../store/ui'
+import NewDeckModal from './NewDeckModal'
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -37,9 +39,14 @@ const DashboardBrowser = () => {
     dispatch(loadOwnDecksThunk());
   }, []);
 
+  const openNewDeckModal = () => {
+    dispatch(openModal('newDeckModal'));
+  }
+
 
   return (
       <main>
+        <NewDeckModal/>
         <div className={classes.heroContent}>
           <Container maxWidth="md">
             <Typography component="h1" variant="h2" align="left" color="textPrimary" gutterBottom>
@@ -48,7 +55,7 @@ const DashboardBrowser = () => {
             <div className={classes.heroButtons}>
               <Grid container spacing={2} >
                 <Grid item>
-                  <Button variant="contained" color="primary">
+                  <Button variant="contained" color="primary" onClick={openNewDeckModal}>
                     Create a new deck
                   </Button>
                 </Grid>

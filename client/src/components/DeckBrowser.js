@@ -9,6 +9,8 @@ import Container from '@material-ui/core/Container';
 
 import DeckCollection from './DeckCollection'
 import { loadPublicDecksThunk } from '../store/decks';
+import {openModal} from '../store/ui'
+import NewDeckModal from './NewDeckModal';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,29 +38,34 @@ const DeckBrowser = () => {
     dispatch(loadPublicDecksThunk());
   }, []);
 
-  // useHistory
+  const openNewDeckModal = () => {
+    dispatch(openModal('newDeckModal'));
+  }
+
+
 
   return (
     <main>
+      <NewDeckModal />
       <div className={classes.heroContent}>
         <Container maxWidth="md">
           <Typography component="h1" variant="h2" align="left" color="textPrimary" gutterBottom>
-            Deck Collection.
+            Flashcard decks
             </Typography>
           <Typography variant="h5" align="left" color="textSecondary" paragraph>
-            This is a collection of decks.
+            Browse the collection of publicly available flashcard decks
             </Typography>
           <div className={classes.heroButtons}>
             <Grid container spacing={2} >
               <Grid item>
 
-                <Button variant="contained" color="primary">
+                <Button variant="contained" color="primary" onClick={openNewDeckModal}>
                   Create a new deck
                     </Button>
               </Grid>
               <Grid item>
                 <Button variant="outlined" color="primary">
-                  Browse public decks
+                  Browse by category
                   </Button>
               </Grid>
             </Grid>

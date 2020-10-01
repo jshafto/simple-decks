@@ -43,7 +43,7 @@ const FlashCardView = () => {
   }, [deckId])
 
   const handleClickOpen = () => {
-    dispatch(openModal(true));
+    dispatch(openModal('addCardModal'));
   }
 
 

@@ -16,19 +16,10 @@ import Typography from '@material-ui/core/Typography'
 
 import { closeModal } from '../store/ui'
 import { createCardThunk } from '../store/cards'
-// import { makeStyles } from '@material-ui/core';
-
-// const useStyles = makeStyles((theme) => ({
-//   mdinput: {
-//     fontFamily: ['monospace']
-//   },
-// }));
-
 
 const NewCardModal = () => {
-  // const classes = useStyles();
 
-  const open = useSelector(state => state.ui.modal);
+  const open = useSelector(state => state.ui.modal==='addCardModal');
   const { deckId } = useParams();
   const dispatch = useDispatch();
   const [front, setFront] = useState();

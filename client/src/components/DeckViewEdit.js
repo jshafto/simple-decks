@@ -15,6 +15,7 @@ import { formatRelative } from 'date-fns';
 
 import FlashCardView from './FlashCardView';
 import { loadDeckThunk } from '../store/decks';
+import {openModal} from '../store/ui'
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -49,6 +50,9 @@ const DeckViewEdit = () => {
     dispatch(loadDeckThunk(deckId));
   }, [])
 
+  const handleClickOpen = () => {
+    dispatch(openModal('addCardModal'));
+  }
 
 
 
@@ -68,13 +72,13 @@ const DeckViewEdit = () => {
           <div className={classes.heroButtons}>
             <Grid container spacing={2} >
               <Grid item>
-                <Button variant="contained" color="primary">
-                  Create a new deck
+                <Button variant="contained" color="primary" onClick={handleClickOpen}>
+                  Add Card
                   </Button>
               </Grid>
               <Grid item>
-                <Button variant="outlined" color="primary">
-                  Browse public decks
+                <Button variant="outlined" color="secondary">
+                  Delete deck
                   </Button>
               </Grid>
             </Grid>

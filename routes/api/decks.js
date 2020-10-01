@@ -249,7 +249,6 @@ router.put('/:deckId(\\d+)', userInfo, asyncHandler(async (req, res, next) => {
 
 // creating a new card in a deck
 router.post('/:deckId(\\d+)/cards', authenticated, cardValidators, asyncHandler(async (req, res, next) => {
-  // res.json({hi: 'hi'})
   const errors = validationResult(req).formatWith(errorFormatter);
   if (!errors.isEmpty()) {
     return next({ status: 422, errors: errors.array() });
