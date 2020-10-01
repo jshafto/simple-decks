@@ -1,9 +1,9 @@
 // "/" route for a logged-in user
 import React from 'react';
-import DeckBrowser from './DeckBrowser';
+import DashboardBrowser from './DashboardBrowser';
 
 
 const Home = () => (
-  <DeckBrowser/>
+  <DashboardBrowser/>
 )
 export default Home;

@@ -1,6 +1,7 @@
 
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -10,7 +11,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { loadPublicDecksThunk } from '../store/decks';
+import { formatRelative } from 'date-fns';
+
+import { clearDeck } from '../store/decks';
+
 
 const useStyles = makeStyles((theme) => ({
   deck: {
@@ -30,12 +34,14 @@ const useStyles = makeStyles((theme) => ({
 
 const DeckCollection = () => {
   const classes = useStyles();
-  const deckCollection = useSelector(state => state.decks.byId);
-
+  const deckCollection = useSelector(state => state.entities.decks.byId);
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(loadPublicDecksThunk());
-  }, []);
+    dispatch(clearDeck());
+  }, [])
+
+
 
   return (
     <Grid container spacing={4}>
@@ -50,7 +56,7 @@ const DeckCollection = () => {
                 {(!deck.maxScore) ? `No previous scores` : `Best Score: ${deck.maxScore}`}
               </Typography>
               <Typography variant="caption">
-                {`Created by ${deck.creator} on ${deck.createdAt}`}
+                {`Created by ${deck.creator} ${formatRelative(new Date(deck.createdAt), new Date())}`}
               </Typography>
             </CardContent>
             <CardActions>
@@ -60,8 +66,8 @@ const DeckCollection = () => {
               <Button size="small" color="primary">
                 Quiz
               </Button>
-              <Button size="small" color="secondary">
-                Edit
+              <Button size="small" color="secondary" component={NavLink} to={`/decks/${deck.id}`}>
+                View
               </Button>
             </CardActions>
           </Card>

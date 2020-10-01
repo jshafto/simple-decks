@@ -1,5 +1,5 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -8,6 +8,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import DeckCollection from './DeckCollection'
+import { loadPublicDecksThunk, clearDeck } from '../store/decks';
+import {openModal} from '../store/ui'
+import NewDeckModal from './NewDeckModal';
+
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -29,36 +33,50 @@ const useStyles = makeStyles((theme) => ({
 const DeckBrowser = () => {
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(clearDeck());
+    dispatch(loadPublicDecksThunk());
+  }, []);
+
+  const openNewDeckModal = () => {
+    dispatch(openModal('newDeckModal'));
+  }
+
+
+
   return (
-      <main>
-        <div className={classes.heroContent}>
-          <Container maxWidth="md">
-            <Typography component="h1" variant="h2" align="left" color="textPrimary" gutterBottom>
-              Deck Collection.
+    <main>
+      <NewDeckModal />
+      <div className={classes.heroContent}>
+        <Container maxWidth="md">
+          <Typography component="h1" variant="h2" align="left" color="textPrimary" gutterBottom>
+            Flashcard decks
             </Typography>
-            <Typography variant="h5" align="left" color="textSecondary" paragraph>
-              This is a collection of decks.
+          <Typography variant="h5" align="left" color="textSecondary" paragraph>
+            Browse the collection of publicly available flashcard decks
             </Typography>
-            <div className={classes.heroButtons}>
-              <Grid container spacing={2} >
-                <Grid item>
-                  <Button variant="contained" color="primary">
-                    Create a new deck
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button variant="outlined" color="primary">
-                    Browse public decks
-                  </Button>
-                </Grid>
+          <div className={classes.heroButtons}>
+            <Grid container spacing={2} >
+              <Grid item>
+
+                <Button variant="contained" color="primary" onClick={openNewDeckModal}>
+                  Create a new deck
+                    </Button>
               </Grid>
-            </div>
-          </Container>
-        </div>
-        <Container className={classes.cardGrid} maxWidth="md">
-          <DeckCollection />
+              <Grid item>
+                <Button variant="outlined" color="primary">
+                  Browse by category
+                  </Button>
+              </Grid>
+            </Grid>
+          </div>
         </Container>
-      </main>
+      </div>
+      <Container className={classes.cardGrid} maxWidth="md">
+        <DeckCollection />
+      </Container>
+    </main>
 
   );
 }

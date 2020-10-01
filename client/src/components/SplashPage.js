@@ -1,4 +1,5 @@
 import React from 'react';
+import {NavLink} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import Box from '@material-ui/core/Box';
@@ -64,9 +65,10 @@ const SplashPage = () => {
             Just flashcards. No frills.
             </Typography>
           <Button className={classes.browse}
+            component={NavLink}
             variant="contained"
             color="primary"
-            href="/browse"
+            to="/browse"
             size="large"
             >
             Browse decks</Button>

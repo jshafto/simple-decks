@@ -1,4 +1,6 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
+
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -76,9 +78,9 @@ const NavBar = () => {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton href="/">
+          <IconButton component={NavLink} to="/">
             <SvgIcon className={classes.logoicon}>
-              <SvgLogo/>
+              <SvgLogo />
             </SvgIcon>
           </IconButton>
           <div className={classes.search}>

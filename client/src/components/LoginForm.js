@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { login } from '../store/authentication';
+import { NavLink } from 'react-router-dom'
 
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import SvgIcon from '@material-ui/core/SvgIcon'
 
 import SvgLogo from './SvgLogo'
+import { login } from '../store/authentication';
 
 
 
@@ -102,7 +103,7 @@ const LoginForm = () => {
               </Link>
             </Grid> */}
           <Grid item>
-            <Link href="/signup" variant="body2">
+            <Link component={NavLink} to="/signup" variant="body2">
               {"Don't have an account? Sign Up"}
             </Link>
           </Grid>

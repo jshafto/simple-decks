@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import {NavLink} from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -78,7 +79,6 @@ const SignupForm = () => {
           label="Email Address"
           name="email"
           autoComplete="email"
-          autoFocus
           value={email}
           onChange={updateEmail}
         />
@@ -106,7 +106,7 @@ const SignupForm = () => {
           </Button>
         <Grid container>
           <Grid item>
-            <Link href="/signin" variant="body2">
+            <Link component={NavLink} to="/signin" variant="body2">
               {"Already have an account? Sign In"}
             </Link>
           </Grid>

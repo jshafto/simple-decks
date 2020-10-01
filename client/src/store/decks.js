@@ -2,53 +2,94 @@ import { apiUrl } from '../config';
 
 // action types
 // get a collection of public decks
-export const LOAD_PUBLIC_DECKS = '/simple-decks/decks/LOAD_PUBLIC_DECKS';
+export const LOAD_DECKS = '/simple-decks/decks/LOAD_DECKS';
+// load single deck details
+export const LOAD_DECK_DETAILS = '/simple-decks/decks/LOAD_DECK_DETAILS';
+
+export const CLEAR_DECK = 'simple-decks/decks/CLEAR_DECK'
 
 
 // action creators
 // get a collection of public decks
-export const loadPublicDecks = (decks) => ({
-  type: LOAD_PUBLIC_DECKS,
+export const loadDecks = (decks) => ({
+  type: LOAD_DECKS,
   decks
 })
+// load_deck_details
+export const loadDeck = (deck) => ({
+  type: LOAD_DECK_DETAILS,
+  activeDeck: deck
+})
+//
+export const clearDeck = () => ({
+  type: CLEAR_DECK
+})
+
 
 // thunks
 // thunk for getting public decks
 export const loadPublicDecksThunk = () => async dispatch => {
   const res = await fetch(`${apiUrl}/decks`);
-  const decks= await res.json();
-  // const decks = {};
-  // data.forEach(deck => decks[deck.id] = deck);
-  // const decks = {};
-  // data.forEach(deck => {
-  //   const { id, name, categoryId, userId, createdAt, updatedAt} = deck;
-  //   const privacy = deck.private;
-  //   const numCards = deck.Cards.length;
-  //   const category = deck.Category.label;
-  //   const creator = deck.User.username;
-  //   const maxScore = (deck.Scores.length) ? Math.max(deck.Scores) :null;
-  //   decks[id] = {
-  //     id,
-  //     name,
-  //     categoryId,
-  //     creatorId: userId,
-  //     privacy,
-  //     numCards,
-  //     category,
-  //     creator,
-  //     maxScore,
-  //     createdAt,
-  //     updatedAt,
-  //   }
-  // })
-  dispatch(loadPublicDecks(decks));
+  if (res.ok) {
+    const decks = await res.json();
+    dispatch(loadDecks(decks));
+  }
 }
 
+// thunk for loading an existing deck
+export const loadDeckThunk = (deckId) => async dispatch => {
+  const res = await fetch(`${apiUrl}/decks/${deckId}`);
+  if (res.ok) {
+    const deck = await res.json();
+    dispatch(loadDeck(deck));
+  }
+}
+
+// thunk for loading a user's own decks
+export const loadOwnDecksThunk = () => async dispatch => {
+  const res = await fetch(`${apiUrl}/users/me/decks`);
+  if (res.ok) {
+    const decks = await res.json();
+    dispatch(loadDecks(decks));
+  }
+}
+
+
+// thunk for creating decks
+export const createDeckThunk = (data) => async dispatch => {
+  const deckData = {
+    categoryId: data.category.id,
+    private: data.privacy,
+    name: data.name
+  }
+  // console.log(data);
+  const res = await fetch(`${apiUrl}/decks`, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(deckData),
+  })
+  if (res.ok) {
+    const deck = await res.json()
+    dispatch(loadDeck(deck))
+  }
+
+}
+
+
+
 //
-export default function reducer (state = { byId: { } }, action) {
+export default function reducer(state = { byId: {}, activeDeck: { } }, action) {
   switch (action.type) {
-    case LOAD_PUBLIC_DECKS: {
-      return {...state, byId: action.decks};
+    case LOAD_DECKS: {
+      return { ...state, byId: action.decks, activeDeck: {} };
+    }
+    case LOAD_DECK_DETAILS: {
+      return { ...state, activeDeck: action.activeDeck }
+    }
+    case CLEAR_DECK: {
+      return {...state, activeDeck: {} }
     }
     default: {
       return state;

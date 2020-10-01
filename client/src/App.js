@@ -9,6 +9,7 @@ import NavBar from './components/NavBar';
 import HomePlex from './components/HomePlex';
 import AuthForm from './components/AuthForm';
 import Footer from './components/Footer';
+import DeckViewEdit from './components/DeckViewEdit'
 import theme from './theme'
 
 
@@ -26,6 +27,9 @@ function App() {
                     </Route>
                     <Route exact path="/browse">
                         <Browse />
+                    </Route>
+                    <Route path="/decks/:deckId">
+                        <DeckViewEdit />
                     </Route>
                     <Route exact path="/">
                         <HomePlex />
