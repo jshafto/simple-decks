@@ -13,22 +13,36 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
+import Autocomplete from '@material-ui/lab/Autocomplete'
+import Switch from '@material-ui/core/Switch'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 import { closeModal } from '../store/ui'
 import { createDeckThunk } from '../store/decks'
 
 
+// const tempCategories = [
+//   {id: 22, label: 'cool stuff'},
+//   {id: 3, label: 'widgets'},
+//   {id: 11, label: 'hootenanny'},
+// ]
+const tempCategories = {
+  '1': {id: 75, label: 'Computer Science'},
+  '2': {id: 3, label: 'widgets'},
+  '3': {id: 11, label: 'hootenanny'},
+}
+
 const NewDeckModal = () => {
 
   const open = useSelector(state => state.ui.modal === 'newDeckModal');
   const dispatch = useDispatch();
-  const [name, setName] = useState();
-  const [category, setCategory] = useState();
-  const [privacy, setPrivacy] = useState();
+  const [name, setName] = useState('');
+  const [category, setCategory] = useState(null);
+  const [privacy, setPrivacy] = useState(false);
 
   const updateName = e => setName(e.target.value)
-  const updateCategory = e => setCategory(e.target.value);
-  const updatePrivacy = e => setPrivacy(e.target.value);
+  const updateCategory = (e,newValue) => setCategory(newValue);
+  const updatePrivacy = e => setPrivacy(e.target.checked);
 
 
   const handleClose = () => {
@@ -51,14 +65,26 @@ const NewDeckModal = () => {
         <DialogContent>
           <form onSubmit={handleSubmit}>
             <TextField
+              autoComplete="off"
               autoFocus
               variant="outlined"
-              margin="dense"
               id="name"
               label="Name"
               fullWidth
               value={name}
               onChange={updateName}
+            />
+            <Autocomplete
+              options={Object.values(tempCategories)}
+              getOptionLabel={(option) => option.label}
+              value={category}
+              clearOnEscape
+              renderInput={(params) => <TextField {...params} label="Category" variant="outlined" margin="normal"  />}
+              onChange={updateCategory}
+            />
+            <FormControlLabel
+              control={<Switch checked={privacy} onChange={updatePrivacy} name="privacy" />}
+              label="Private (only you will be able to see this deck)"
             />
             <Button type="submit" color="primary">
               Submit

@@ -51,12 +51,18 @@ export const loadOwnDecksThunk = () => async dispatch => {
 
 // thunk for creating decks
 export const createDeckThunk = (data) => async dispatch => {
+  const deckData = {
+    categoryId: data.category.id,
+    private: data.privacy,
+    name: data.name
+  }
+  // console.log(data);
   const res = await fetch(`${apiUrl}/decks`, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(deckData),
   })
   if (res.ok) {
     const deck = await res.json()
