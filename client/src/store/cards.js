@@ -3,6 +3,7 @@ import { apiUrl } from '../config';
 // action types
 export const LOAD_CARDS = '/simple-decks/cards/LOAD_CARDS';
 export const ADD_CARD= '/simple-decks/cards/ADD_CARD';
+export const CLEAR_CARDS = 'simple-decks/cards/CLEAR_CARDS';
 
 
 // action creators
@@ -14,6 +15,9 @@ export const loadCards = (cards) => ({
 export const addCard = (card) => ({
   type: ADD_CARD,
   card
+})
+export const clearCards = () => ({
+  type: CLEAR_CARDS
 })
 
 // thunks
@@ -53,6 +57,9 @@ export default function reducer (state = { byId: {} }, action) {
       const cards = {...state.byId};
       cards[action.card.id] = action.card;
       return {...state, byId: cards}
+    }
+    case CLEAR_CARDS: {
+      return {...state, byId: {}}
     }
     default: {
       return state;

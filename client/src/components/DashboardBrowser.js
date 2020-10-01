@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import {NavLink} from 'react-router-dom';
 
@@ -34,6 +35,8 @@ const useStyles = makeStyles((theme) => ({
 const DashboardBrowser = () => {
   const classes = useStyles();
 
+
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(loadOwnDecksThunk());
@@ -42,6 +45,7 @@ const DashboardBrowser = () => {
   const openNewDeckModal = () => {
     dispatch(openModal('newDeckModal'));
   }
+
 
 
   return (

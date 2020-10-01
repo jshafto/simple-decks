@@ -6,6 +6,8 @@ export const LOAD_DECKS = '/simple-decks/decks/LOAD_DECKS';
 // load single deck details
 export const LOAD_DECK_DETAILS = '/simple-decks/decks/LOAD_DECK_DETAILS';
 
+export const CLEAR_DECK = 'simple-decks/decks/CLEAR_DECK'
+
 
 // action creators
 // get a collection of public decks
@@ -19,6 +21,9 @@ export const loadDeck = (deck) => ({
   activeDeck: deck
 })
 //
+export const clearDeck = () => ({
+  type: CLEAR_DECK
+})
 
 // thunks
 // thunk for getting public decks
@@ -68,6 +73,7 @@ export const createDeckThunk = (data) => async dispatch => {
     const deck = await res.json()
     dispatch(loadDeck(deck))
   }
+
 }
 
 
@@ -80,6 +86,9 @@ export default function reducer(state = { byId: {}, activeDeck: { } }, action) {
     }
     case LOAD_DECK_DETAILS: {
       return { ...state, activeDeck: action.activeDeck }
+    }
+    case CLEAR_DECK: {
+      return {...state, activeDeck: {} }
     }
     default: {
       return state;

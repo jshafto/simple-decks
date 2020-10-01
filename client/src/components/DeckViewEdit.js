@@ -14,7 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import { formatRelative } from 'date-fns';
 
 import FlashCardView from './FlashCardView';
-import { loadDeckThunk } from '../store/decks';
+import { loadDeckThunk, clearDeck } from '../store/decks';
 import {openModal} from '../store/ui'
 
 const useStyles = makeStyles((theme) => ({
@@ -48,6 +48,7 @@ const DeckViewEdit = () => {
 
   useEffect(() => {
     dispatch(loadDeckThunk(deckId));
+    return () => dispatch(clearDeck())
   }, [])
 
   const handleClickOpen = () => {

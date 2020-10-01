@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton'
@@ -18,7 +18,7 @@ import Switch from '@material-ui/core/Switch'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 import { closeModal } from '../store/ui'
-import { createDeckThunk } from '../store/decks'
+import { createDeckThunk, loadOwnDecksThunk } from '../store/decks'
 
 
 // const tempCategories = [
@@ -36,6 +36,13 @@ const NewDeckModal = () => {
 
   const open = useSelector(state => state.ui.modal === 'newDeckModal');
   const dispatch = useDispatch();
+
+  const history = useHistory();
+  const activeDeck = useSelector(state => state.entities.decks.activeDeck);
+  // const history = useHistory();
+  // for redirecting???
+  // const deckForRedirect = useSelector(state => state.decks.)
+
   const [name, setName] = useState('');
   const [category, setCategory] = useState(null);
   const [privacy, setPrivacy] = useState(false);
@@ -43,6 +50,13 @@ const NewDeckModal = () => {
   const updateName = e => setName(e.target.value)
   const updateCategory = (e,newValue) => setCategory(newValue);
   const updatePrivacy = e => setPrivacy(e.target.checked);
+
+
+  useEffect(() => {
+    if (activeDeck.id) {
+      history.push(`/decks/${activeDeck.id}`)
+    }
+  }, [activeDeck])
 
 
   const handleClose = () => {
@@ -65,6 +79,7 @@ const NewDeckModal = () => {
         <DialogContent>
           <form onSubmit={handleSubmit}>
             <TextField
+              required
               autoComplete="off"
               autoFocus
               variant="outlined"
@@ -75,11 +90,12 @@ const NewDeckModal = () => {
               onChange={updateName}
             />
             <Autocomplete
+              required
               options={Object.values(tempCategories)}
               getOptionLabel={(option) => option.label}
               value={category}
               clearOnEscape
-              renderInput={(params) => <TextField {...params} label="Category" variant="outlined" margin="normal"  />}
+              renderInput={(params) => <TextField {...params} label="Category" variant="outlined" margin="normal" required />}
               onChange={updateCategory}
             />
             <FormControlLabel

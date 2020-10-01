@@ -100,7 +100,7 @@ router.post('/', authenticated, deckValidators, asyncHandler(async (req, res, ne
   const { name, categoryId, private } = req.body;
   const userId = req.user.id;
   const deck = await Deck.create({ name, categoryId, userId, private });
-  res.json(deck.id);
+  res.json(deck);
 }))
 
 

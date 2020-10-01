@@ -14,7 +14,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import CloseIcon from '@material-ui/icons/Close'
 import IconButton from '@material-ui/core/IconButton'
 
-import { loadCardsThunk } from '../store/cards';
+import { loadCardsThunk, clearCards } from '../store/cards';
 import { openModal } from '../store/ui';
 import NewCardModal from './NewCardModal';
 
@@ -40,6 +40,7 @@ const FlashCardView = () => {
 
   useEffect(() => {
     dispatch(loadCardsThunk(deckId))
+    return () => dispatch(clearCards());
   }, [deckId])
 
   const handleClickOpen = () => {
