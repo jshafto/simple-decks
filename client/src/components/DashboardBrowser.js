@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import DeckCollection from './DeckCollection'
-import { loadOwnDecksThunk } from '../store/decks';
+import { loadOwnDecksThunk, clearDeck } from '../store/decks';
 import { openModal } from '../store/ui'
 import NewDeckModal from './NewDeckModal'
 
@@ -39,6 +39,7 @@ const DashboardBrowser = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(clearDeck());
     dispatch(loadOwnDecksThunk());
   }, []);
 

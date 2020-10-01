@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
@@ -12,6 +12,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { formatRelative } from 'date-fns';
+
+import { clearDeck } from '../store/decks';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,6 +35,11 @@ const useStyles = makeStyles((theme) => ({
 const DeckCollection = () => {
   const classes = useStyles();
   const deckCollection = useSelector(state => state.entities.decks.byId);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearDeck());
+  }, [])
 
 
 

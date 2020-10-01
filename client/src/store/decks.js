@@ -25,6 +25,7 @@ export const clearDeck = () => ({
   type: CLEAR_DECK
 })
 
+
 // thunks
 // thunk for getting public decks
 export const loadPublicDecksThunk = () => async dispatch => {
@@ -82,7 +83,7 @@ export const createDeckThunk = (data) => async dispatch => {
 export default function reducer(state = { byId: {}, activeDeck: { } }, action) {
   switch (action.type) {
     case LOAD_DECKS: {
-      return { ...state, byId: action.decks };
+      return { ...state, byId: action.decks, activeDeck: {} };
     }
     case LOAD_DECK_DETAILS: {
       return { ...state, activeDeck: action.activeDeck }

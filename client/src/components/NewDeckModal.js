@@ -18,7 +18,7 @@ import Switch from '@material-ui/core/Switch'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 import { closeModal } from '../store/ui'
-import { createDeckThunk, loadOwnDecksThunk } from '../store/decks'
+import { createDeckThunk, clearDeck } from '../store/decks'
 
 
 // const tempCategories = [
@@ -33,15 +33,14 @@ const tempCategories = {
 }
 
 const NewDeckModal = () => {
+  const [isNotFirstMount, setIsNotFirstMount] = useState(false);
 
   const open = useSelector(state => state.ui.modal === 'newDeckModal');
   const dispatch = useDispatch();
 
   const history = useHistory();
   const activeDeck = useSelector(state => state.entities.decks.activeDeck);
-  // const history = useHistory();
-  // for redirecting???
-  // const deckForRedirect = useSelector(state => state.decks.)
+
 
   const [name, setName] = useState('');
   const [category, setCategory] = useState(null);
@@ -51,19 +50,21 @@ const NewDeckModal = () => {
   const updateCategory = (e,newValue) => setCategory(newValue);
   const updatePrivacy = e => setPrivacy(e.target.checked);
 
-
   useEffect(() => {
-    if (activeDeck.id) {
+    if (isNotFirstMount && activeDeck.id) {
       history.push(`/decks/${activeDeck.id}`)
     }
+    setIsNotFirstMount(true);
   }, [activeDeck])
+
 
 
   const handleClose = () => {
     dispatch(closeModal());
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    dispatch(clearDeck());
     dispatch(createDeckThunk({name, category, privacy}));
     dispatch(closeModal());
   };

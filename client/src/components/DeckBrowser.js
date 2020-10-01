@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import DeckCollection from './DeckCollection'
-import { loadPublicDecksThunk } from '../store/decks';
+import { loadPublicDecksThunk, clearDeck } from '../store/decks';
 import {openModal} from '../store/ui'
 import NewDeckModal from './NewDeckModal';
 
@@ -35,6 +35,7 @@ const DeckBrowser = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(clearDeck());
     dispatch(loadPublicDecksThunk());
   }, []);
 
