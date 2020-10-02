@@ -1,3 +1,5 @@
+// carousel inspired by this demo
+// https://levelup.gitconnected.com/adding-transitions-to-a-react-carousel-with-material-ui-b95825653c1b
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -106,6 +108,8 @@ const QuizCard = () => {
   const [score, setScore] = useState(0);
   const [answered, setAnswered] = useState(false);
 
+  const [deckFinished, setDeckFinished] = useState(false);
+
   const handleGotIt = () => {
     const newScore = score + 1;
     setScore(newScore);
@@ -117,6 +121,14 @@ const QuizCard = () => {
     setAnswered(true);
   }
 
+  const handleSubmitScore = () => {
+    // dispatch
+    // reset
+    setDeckFinished(false);
+    setScore(0);
+
+
+  }
 
   const handleChange = () => {
     setCardOpen((prev) => !prev);
@@ -124,6 +136,11 @@ const QuizCard = () => {
   const carouselChange = (direction) => {
     setCardOpen(false);
     const increment = direction === 'left' ? -1 : 1;
+    if ((cardIndex + 1+increment) === Object.values(cards).length && !deckFinished) {
+      setDeckFinished(true);
+    }
+
+
     const newCardIndex = (cardIndex + increment + Object.values(cards).length) % Object.values(cards).length;
 
     const oppDirection = direction === 'left' ? 'right' : 'left';
@@ -142,12 +159,15 @@ const QuizCard = () => {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.keyCode === 39) {
-        carouselChange('right');
+        if (answered) {
+          carouselChange('right');
+        }
       }
-      if (e.keyCode === 37) {
-        carouselChange('left');
-      }
+
       if (e.keyCode === 13) {
+        handleChange();
+      }
+      if (e.keyCode === 40 ||e.keyCode === 38) {
         handleChange();
       }
     };
@@ -168,7 +188,7 @@ const QuizCard = () => {
       <Typography variant="h5" component="h5" color="textSecondary">{`${cardIndex + 1}/${Object.values(cards).length}`}</Typography>
       <Grid item>
         <Box minHeight={500} alignItems="center" >
-          <div style={{ maxWidth: "500px", paddingTop: "50px", margin: "0 auto", color: "#494949", overflow: "hidden" }}>
+          <div style={{ maxWidth: "600px", paddingTop: "50px", margin: "0 auto", color: "#494949", overflow: "hidden" }}>
         <Typography align="center" variant="h4" component="h5">{`Score: ${score}/${Object.values(cards).length}`}</Typography>
             <Grid container justify="center">
 
@@ -176,16 +196,20 @@ const QuizCard = () => {
               <Button disabled={answered}style={{ margin: 4 }} color="secondary" variant="contained" onClick={handleNoGotIt} >Didn't get it</Button>
 
             </Grid>
-            <Grid container justify="space-between">
-              <Button disabled onClick={() => carouselChange('left')}>Prev</Button>
-
-              <Button disabled={!answered} onClick={() => carouselChange('right')}>Next</Button>
+            <Grid container justify="flex-end">
+              {(deckFinished) ? (
+                <Button color="primary" disabled={!answered} onClick={handleSubmitScore}>Save Score</Button>
+              ) :
+              (
+                <Button disabled={!answered} onClick={() => carouselChange('right')}>Next</Button>
+              )
+            }
             </Grid>
             {
               (Object.values(cards).length) ? (
                 <Slide maxWidth="sm" in={slideIn} direction={slideDirection} timeout={200}>
                   <div>
-                    <Box style={{ maxWidth: 500 }} key={Object.values(cards)[cardIndex].id}>
+                    <Box style={{ maxWidth: 600 }} key={Object.values(cards)[cardIndex].id}>
                       <Accordion expanded={cardOpen} onChange={handleChange}>
                         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header" >
 
