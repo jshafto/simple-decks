@@ -106,7 +106,15 @@ export const createDeckThunk = (data) => async dispatch => {
 
 }
 
+export const deleteDeckThunk = (deckId) => async dispatch => {
+  const res = await fetch(`${apiUrl}/decks/${deckId}`, {
+    method: "DELETE"
+  })
 
+  if (res.ok) {
+    dispatch(clearDeck());
+  }
+}
 
 //
 export default function reducer(state = { byId: {}, activeDeck: { } }, action) {

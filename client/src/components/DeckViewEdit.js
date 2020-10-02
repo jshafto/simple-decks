@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {useParams} from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -15,7 +15,8 @@ import { formatRelative } from 'date-fns';
 
 import FlashCardView from './FlashCardView';
 import { loadDeckThunk, clearDeck } from '../store/decks';
-import {openModal} from '../store/ui'
+import { openModal } from '../store/ui'
+import DeleteDeckModal from './DeleteDeckModal';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -36,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 const DeckViewEdit = () => {
+  const history =  useHistory();
 
 
   const classes = useStyles();
@@ -47,14 +49,31 @@ const DeckViewEdit = () => {
 
 
   const deck = useSelector(state => state.entities.decks.activeDeck);
+  const userId = useSelector(state => state.authentication.id);
 
   useEffect(() => {
     dispatch(loadDeckThunk(deckId));
     return () => dispatch(clearDeck())
   }, [])
 
+  const firstUpdate = useRef(true);
+  useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+    if (!Object.values(deck).length) {
+      history.push("/")
+    }
+
+  }, [deck]);
+
   const handleClickOpen = () => {
     dispatch(openModal('addCardModal'));
+  }
+
+  const handleDeleteClickOpen = () => {
+    dispatch(openModal('deleteDeckModal'));
   }
 
 
@@ -70,9 +89,12 @@ const DeckViewEdit = () => {
             {deck.category}
           </Typography>
           <Typography variant="h6" align="left" color="textSecondary" paragraph>
-          {(deck.createdAt) ? `Created by ${deck.creator} ${formatRelative(new Date(deck.createdAt), new Date())}` : `Created by`}
+            {(deck.createdAt) ? `Created by ${deck.creator} ${formatRelative(new Date(deck.createdAt), new Date())}` : `Created by`}
           </Typography>
+
+          {(userId === deck.creatorId) ? (
           <div className={classes.heroButtons}>
+            <DeleteDeckModal />
             <Grid container spacing={2} >
               <Grid item>
                 <Button variant="contained" color="primary" onClick={handleClickOpen}>
@@ -80,12 +102,14 @@ const DeckViewEdit = () => {
                   </Button>
               </Grid>
               <Grid item>
-                <Button variant="outlined" color="secondary">
+                <Button variant="outlined" color="secondary" onClick={handleDeleteClickOpen}>
                   Delete deck
                   </Button>
               </Grid>
             </Grid>
           </div>
+
+          ) : <div />}
           <TableContainer component={Paper}>
             <FlashCardView />
           </TableContainer>

@@ -106,7 +106,7 @@ router.post('/', authenticated, deckValidators, asyncHandler(async (req, res, ne
 
 // requires auth (user id must match deck's creator)
 router.delete('/:deckId(\\d+)', authenticated, asyncHandler(async (req, res, next) => {
-  const deckId = req.params.id;
+  const deckId = req.params.deckId;
   const deck = await Deck.findByPk(deckId);
   if (req.user.id !== deck.userId) {
     const err = new Error("Unauthorized");
@@ -230,7 +230,7 @@ router.put('/:deckId(\\d+)', userInfo, asyncHandler(async (req, res, next) => {
   if (req.user.id !== deck.userId) {
     const err = new Error("Unauthorized");
     err.status = 401;
-    err.message = "You are not authorized to delete this deck.";
+    err.message = "You are not authorized to edit this deck.";
     err.title = "Unauthorized";
     throw err;
   }
