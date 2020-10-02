@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 const DeckCollection = () => {
   const classes = useStyles();
   const { categoryId } = useParams();
+  const userId = useSelector(state => state.authentication.id);
   const deckCollection = useSelector(state => state.entities.decks.byId);
   const [decklist, setDecklist] = useState([]);
   // const dispatch = useDispatch();
@@ -68,12 +69,19 @@ const DeckCollection = () => {
               <Button size="small" color="primary" component={NavLink} to={`/practice/${deck.id}`}>
                 Practice
               </Button>
+              {(userId) ? (
               <Button size="small" color="primary" component={NavLink} to={`/quiz/${deck.id}`}>
                 Quiz
               </Button>
-              <Button size="small" color="secondary" component={NavLink} to={`/decks/${deck.id}`}>
+              ) : <div/>}
+              <Button size="small" color="primary" component={NavLink} to={`/decks/${deck.id}`}>
                 View
               </Button>
+              {/* {(userId===deck.creatorId) ? (
+              <Button size="small" color="secondary" component={NavLink} to={`/quiz/${deck.id}`}>
+                Delete
+              </Button>
+              ) : <div/>} */}
             </CardActions>
           </Card>
         </Grid>

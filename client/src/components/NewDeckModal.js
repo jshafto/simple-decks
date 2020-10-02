@@ -19,6 +19,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 import { closeModal } from '../store/ui'
 import { createDeckThunk, clearDeck } from '../store/decks'
+import { loadCategoriesThunk, clearCategories } from '../store/categories';
 
 
 // const tempCategories = [
@@ -26,11 +27,11 @@ import { createDeckThunk, clearDeck } from '../store/decks'
 //   {id: 3, label: 'widgets'},
 //   {id: 11, label: 'hootenanny'},
 // ]
-const tempCategories = {
-  '1': {id: 75, label: 'Computer Science'},
-  '2': {id: 3, label: 'widgets'},
-  '3': {id: 11, label: 'hootenanny'},
-}
+// const tempCategories = {
+//   '1': {id: 75, label: 'Computer Science'},
+//   '2': {id: 3, label: 'widgets'},
+//   '3': {id: 11, label: 'hootenanny'},
+// }
 
 const NewDeckModal = () => {
   const [isNotFirstMount, setIsNotFirstMount] = useState(false);
@@ -42,12 +43,15 @@ const NewDeckModal = () => {
   const activeDeck = useSelector(state => state.entities.decks.activeDeck);
 
 
+  const categories = useSelector(state => state.entities.categories.byId)
+
+
   const [name, setName] = useState('');
   const [category, setCategory] = useState(null);
   const [privacy, setPrivacy] = useState(false);
 
   const updateName = e => setName(e.target.value)
-  const updateCategory = (e,newValue) => setCategory(newValue);
+  const updateCategory = (e, newValue) => setCategory(newValue);
   const updatePrivacy = e => setPrivacy(e.target.checked);
 
   useEffect(() => {
@@ -58,6 +62,11 @@ const NewDeckModal = () => {
   }, [activeDeck])
 
 
+  useEffect(() => {
+    dispatch(loadCategoriesThunk());
+    return () => dispatch(clearCategories());
+  }, [])
+
 
   const handleClose = () => {
     dispatch(closeModal());
@@ -65,7 +74,7 @@ const NewDeckModal = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(clearDeck());
-    dispatch(createDeckThunk({name, category, privacy}));
+    dispatch(createDeckThunk({ name, category, privacy }));
     dispatch(closeModal());
   };
 
@@ -92,7 +101,7 @@ const NewDeckModal = () => {
             />
             <Autocomplete
               required
-              options={Object.values(tempCategories)}
+              options={Object.values(categories)}
               getOptionLabel={(option) => option.label}
               value={category}
               clearOnEscape

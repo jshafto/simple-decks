@@ -33,7 +33,8 @@ const FlashCardView = () => {
   const { deckId } = useParams();
 
   const flashcards = useSelector(state => state.entities.cards.byId);
-
+  const deckCreatorId = useSelector(state => state.entities.decks.activeDeck.creatorId);
+  const userId = useSelector(state => state.authentication.id);
 
   const dispatch = useDispatch();
   // console.log(deckId)
@@ -52,12 +53,11 @@ const FlashCardView = () => {
     // <TableContainer component={Paper}>
     <Table className={classes.table} aria-label="flashcard-table">
       <TableHead>
+
         <TableRow>
-          <TableCell align="left" width="40%">Front</TableCell>
-          <TableCell align="left" width="40%">Back</TableCell>
-          <TableCell>
-            <NewCardModal />
-          </TableCell>
+          <TableCell align="left" width={(userId === deckCreatorId) ? "40%" : "50%"}>Front</TableCell>
+          <TableCell align="left" width={(userId === deckCreatorId) ? "40%" : "50%"}>Back</TableCell>
+          <TableCell><NewCardModal /></TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -69,16 +69,20 @@ const FlashCardView = () => {
             <TableCell align="left">
               <Markdown>{flashcard.back}</Markdown>
             </TableCell>
-            <TableCell align="right" size="small" style={{ verticalAlign: 'top' }}>
-              <IconButton>
-                <EditIcon />
-              </IconButton>
-            <IconButton>
-                <CloseIcon />
-              </IconButton>
-            </TableCell>
+            {(userId === deckCreatorId) ? (
+              <TableCell align="right" size="small" style={{ verticalAlign: 'top' }}>
+                <IconButton>
+                  <EditIcon />
+                </IconButton>
+                <IconButton>
+                  <CloseIcon />
+                </IconButton>
+              </TableCell>
+            ) : <div />}
           </TableRow>
         ))}
+
+        {(userId===deckCreatorId) ? (
         <TableRow>
           <TableCell align="center" colSpan={3}>
             <Button color="primary" size='large' variant='contained' onClick={handleClickOpen}>
@@ -86,6 +90,7 @@ const FlashCardView = () => {
             </Button>
           </TableCell>
         </TableRow>
+        ) : <TableRow />}
       </TableBody>
     </Table>
   );
