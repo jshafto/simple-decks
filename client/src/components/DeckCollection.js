@@ -1,7 +1,7 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -34,18 +34,23 @@ const useStyles = makeStyles((theme) => ({
 
 const DeckCollection = () => {
   const classes = useStyles();
+  const { categoryId } = useParams();
   const deckCollection = useSelector(state => state.entities.decks.byId);
-  const dispatch = useDispatch();
+  const [decklist, setDecklist] = useState([]);
+  // const dispatch = useDispatch();
 
+  // useEffect(() => {
+  //   dispatch(clearDeck());
+  // }, [])
   useEffect(() => {
-    dispatch(clearDeck());
-  }, [])
-
+    let newDecklist = (categoryId) ? Object.values(deckCollection).filter(deck => deck.categoryId===parseInt(categoryId)) : Object.values(deckCollection)
+    setDecklist(newDecklist);
+  }, [deckCollection, categoryId]);
 
 
   return (
     <Grid container spacing={4}>
-      {Object.values(deckCollection).map((deck) => (
+      {decklist.map((deck) => (
         <Grid item key={deck.id} xs={12} sm={6} md={4}>
           <Card className={classes.deck}>
             <CardContent className={classes.deckContent}>

@@ -30,6 +30,9 @@ function App() {
                     <Route exact path="/browse">
                         <Browse />
                     </Route>
+                    <Route exact path="/categories/:categoryId">
+                        <Browse />
+                    </Route>
                     <Route path="/decks/:deckId">
                         <DeckViewEdit />
                     </Route>

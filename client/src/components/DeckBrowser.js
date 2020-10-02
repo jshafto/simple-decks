@@ -11,6 +11,7 @@ import DeckCollection from './DeckCollection'
 import { loadPublicDecksThunk, clearDeck } from '../store/decks';
 import {openModal} from '../store/ui'
 import NewDeckModal from './NewDeckModal';
+import CategoryButtons from './CategoryButtons';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -53,23 +54,14 @@ const DeckBrowser = () => {
           <Typography component="h1" variant="h2" align="left" color="textPrimary" gutterBottom>
             Flashcard decks
             </Typography>
-          <Typography variant="h5" align="left" color="textSecondary" paragraph>
-            Browse the collection of publicly available flashcard decks
-            </Typography>
+          {/* <Typography variant="h5" align="left" color="textSecondary" paragraph>
+            Browse the collection of publicly available flashcard decks.
+            </Typography> */}
           <div className={classes.heroButtons}>
-            <Grid container spacing={2} >
-              <Grid item>
-
-                <Button variant="contained" color="primary" onClick={openNewDeckModal}>
-                  Create a new deck
-                    </Button>
-              </Grid>
-              <Grid item>
-                <Button variant="outlined" color="primary">
-                  Browse by category
-                  </Button>
-              </Grid>
-            </Grid>
+          <Typography variant="h6" align="left" color="textSecondary">
+            Browse by category
+            </Typography>
+            <CategoryButtons />
           </div>
         </Container>
       </div>
