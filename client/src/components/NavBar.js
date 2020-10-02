@@ -1,5 +1,5 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, {useState} from 'react';
+import { NavLink, useHistory } from 'react-router-dom';
 
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -12,6 +12,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import LogoutButton from './LogoutButton'
 import SvgLogo from './SvgLogo';
 import SvgIcon from '@material-ui/core/SvgIcon'
+import Hidden from '@material-ui/core/Hidden'
+import Button from '@material-ui/core/Button'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,6 +76,17 @@ const useStyles = makeStyles((theme) => ({
 const NavBar = () => {
   const classes = useStyles();
 
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const updateSearchTerm = (e) => setSearchTerm(e.target.value);
+  const history = useHistory();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    history.push(`/search?q=${encodeURIComponent(searchTerm)}`)
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -87,14 +100,20 @@ const NavBar = () => {
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
+            <form onSubmit={handleSubmit}>
             <InputBase
+              type='search'
               placeholder="Search…"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
+              value={searchTerm}
+              onChange={updateSearchTerm}
             />
+            <button type="submit" style={{display: 'none'}}/>
+            </form>
           </div>
           <Typography className={classes.title} />
           <LogoutButton className={classes.logoutButton} />

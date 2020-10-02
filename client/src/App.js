@@ -13,6 +13,7 @@ import DeckViewEdit from './components/DeckViewEdit'
 import theme from './theme'
 import PracticeMode from './components/PracticeMode';
 import QuizMode from './components/QuizMode'
+import SearchBrowser from './components/SearchBrowser'
 
 
 
@@ -32,6 +33,9 @@ function App() {
                     </Route>
                     <Route exact path="/categories/:categoryId">
                         <Browse />
+                    </Route>
+                    <Route path="/search">
+                        <SearchBrowser />
                     </Route>
                     <Route path="/decks/:deckId">
                         <DeckViewEdit />

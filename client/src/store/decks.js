@@ -42,6 +42,14 @@ export const loadPublicDecksThunk = () => async dispatch => {
   }
 }
 
+export const loadSearchDecksThunk = (searchTerm) => async dispatch => {
+  const res = await fetch(`${apiUrl}/decks?q=${searchTerm}`);
+  if (res.ok) {
+    const decks = await res.json();
+    dispatch(loadDecks(decks));
+  }
+}
+
 // thunk for loading an existing deck
 export const loadDeckThunk = (deckId) => async dispatch => {
   const res = await fetch(`${apiUrl}/decks/${deckId}`);
