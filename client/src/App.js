@@ -11,7 +11,8 @@ import AuthForm from './components/AuthForm';
 import Footer from './components/Footer';
 import DeckViewEdit from './components/DeckViewEdit'
 import theme from './theme'
-import PracticeMode from './components/PracticeMode'
+import PracticeMode from './components/PracticeMode';
+import QuizMode from './components/QuizMode'
 
 
 
@@ -34,6 +35,9 @@ function App() {
                     </Route>
                     <Route path="/practice/:deckId">
                         <PracticeMode />
+                    </Route>
+                    <Route path="/quiz/:deckId">
+                        <QuizMode />
                     </Route>
                     <Route exact path="/">
                         <HomePlex />

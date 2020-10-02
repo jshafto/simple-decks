@@ -72,7 +72,7 @@ const AccordionDetails = withStyles((theme) => ({
 //   { front: 'hello3', back: 'goodbye3', id: '3' }
 // ]
 
-const PracticeCard = () => {
+const QuizCard = () => {
 
 
   const cards = useSelector(state => state.entities.cards.byId);
@@ -103,7 +103,19 @@ const PracticeCard = () => {
   const [slideIn, setSlideIn] = useState(true);
   const [slideDirection, setSlideDirection] = useState('left');
 
+  const [score, setScore] = useState(0);
+  const [answered, setAnswered] = useState(false);
 
+  const handleGotIt = () => {
+    const newScore = score + 1;
+    setScore(newScore);
+    setAnswered(true);
+  }
+  const handleNoGotIt = () => {
+    const newScore = score;
+    setScore(newScore);
+    setAnswered(true);
+  }
 
 
   const handleChange = () => {
@@ -117,6 +129,8 @@ const PracticeCard = () => {
     const oppDirection = direction === 'left' ? 'right' : 'left';
     setSlideDirection(direction);
     setSlideIn(false);
+
+    setAnswered(false);
 
     setTimeout(() => {
       setCardIndex(newCardIndex);
@@ -153,11 +167,19 @@ const PracticeCard = () => {
       {/* <Typography variant="h4" component="h4">Front</Typography> */}
       <Typography variant="h5" component="h5" color="textSecondary">{`${cardIndex + 1}/${Object.values(cards).length}`}</Typography>
       <Grid item>
-        <Box  minHeight={500} alignItems="center" >
+        <Box minHeight={500} alignItems="center" >
           <div style={{ maxWidth: "500px", paddingTop: "50px", margin: "0 auto", color: "#494949", overflow: "hidden" }}>
+        <Typography align="center" variant="h4" component="h5">{`Score: ${score}/${Object.values(cards).length}`}</Typography>
+            <Grid container justify="center">
+
+              <Button disabled={answered} style={{ margin: 4 }} color="primary" variant="contained" onClick={handleGotIt}>Got it</Button>
+              <Button disabled={answered}style={{ margin: 4 }} color="secondary" variant="contained" onClick={handleNoGotIt} >Didn't get it</Button>
+
+            </Grid>
             <Grid container justify="space-between">
-              <Button onClick={() => carouselChange('left')}>Prev</Button>
-              <Button onClick={() => carouselChange('right')}>Next</Button>
+              <Button disabled onClick={() => carouselChange('left')}>Prev</Button>
+
+              <Button disabled={!answered} onClick={() => carouselChange('right')}>Next</Button>
             </Grid>
             {
               (Object.values(cards).length) ? (
@@ -195,4 +217,4 @@ const PracticeCard = () => {
   )
 }
 
-export default PracticeCard;
+export default QuizCard;
