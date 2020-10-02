@@ -72,7 +72,7 @@ router.get('/', userInfo, asyncHandler(async (req, res, next) => {
     const numCards = deck.Cards.length;
     const category = deck.Category.label;
     const creator = deck.User.username;
-    const maxScore = (deck.Scores.length) ? Math.max(deck.Scores) : null;
+    const maxScore = (deck.Scores.length) ? Math.max(...deck.Scores.map(score=>score.hits)) :null;
     decks[id] = {
       id,
       name,
@@ -174,7 +174,7 @@ router.get('/:deckId(\\d+)', userInfo, asyncHandler(async (req, res, next) => {
   const numCards = dbDeck.Cards.length;
   const category = dbDeck.Category.label;
   const creator = dbDeck.User.username;
-  const maxScore = (dbDeck.Scores.length) ? Math.max(dbDeck.Scores) : null;
+  const maxScore = (dbDeck.Scores.length) ? Math.max(...dbDeck.Scores.map(score=>score.hits)) :null;
   const deck = {
     id,
     name,

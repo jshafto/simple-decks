@@ -94,7 +94,7 @@ router.get('/me/decks', authenticated, asyncHandler(async (req, res, next) => {
     const numCards = deck.Cards.length;
     const category = deck.Category.label;
     const creator = deck.User.username;
-    const maxScore = (deck.Scores.length) ? Math.max(deck.Scores) :null;
+    const maxScore = (deck.Scores.length) ? Math.max(...deck.Scores.map(score=>score.hits)) :null;
     decks[id] = {
       id,
       name,
@@ -115,11 +115,16 @@ router.get('/me/decks', authenticated, asyncHandler(async (req, res, next) => {
 
 // posting a new score
 router.post('/me/decks/:deckId(\\d+)/scores', authenticated, asyncHandler(async (req, res, next) => {
-  const deckId = req.params.id;
+  const deckId = req.params.deckId;
   const userId = req.user.id;
   const { hits, total } = req.body;
   const score = await Score.create({ deckId, userId, hits, total })
-  res.json({ score });
+  const deck = await Deck.findByPk (deckId, {
+    include: Score
+  })
+  const maxScore = (deck.Scores.length) ? Math.max(...deck.Scores.map(score=>score.hits)) :null;
+  // const response = Math.max(...deck.Scores.map(score=>score.hits));
+  res.json({maxScore})
 }))
 
 

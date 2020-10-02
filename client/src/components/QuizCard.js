@@ -19,8 +19,9 @@ import Button from '@material-ui/core/Button'
 import Slide from '@material-ui/core/Slide'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { loadCardsThunk, clearCards } from '../store/cards';
-import { loadDeckThunk, clearDeck } from '../store/decks'
-import AccordionActions from '@material-ui/core/AccordionActions'
+import { loadDeckThunk, clearDeck, postScoreThunk } from '../store/decks'
+import AccordionActions from '@material-ui/core/AccordionActions';
+
 
 import { withStyles } from '@material-ui/core'
 
@@ -123,6 +124,7 @@ const QuizCard = () => {
 
   const handleSubmitScore = () => {
     // dispatch
+    dispatch(postScoreThunk(score, Object.values(cards).length, deckId))
     // reset
     setDeckFinished(false);
     setScore(0);
@@ -184,7 +186,7 @@ const QuizCard = () => {
     // <Paper variant="outline">
     <Grid container direction="column">
       <Typography variant="h3" component="h2">{deck.name}</Typography>
-      {/* <Typography variant="h4" component="h4">Front</Typography> */}
+      <Typography>{(deck.maxScore) ? `Best Score: ${deck.maxScore}` : "No previous scores"}</Typography>
       <Typography variant="h5" component="h5" color="textSecondary">{`${cardIndex + 1}/${Object.values(cards).length}`}</Typography>
       <Grid item>
         <Box minHeight={500} alignItems="center" >

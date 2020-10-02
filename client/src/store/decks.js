@@ -8,6 +8,8 @@ export const LOAD_DECK_DETAILS = '/simple-decks/decks/LOAD_DECK_DETAILS';
 
 export const CLEAR_DECK = 'simple-decks/decks/CLEAR_DECK'
 
+export const UPDATE_SCORE = 'simple-decks/decks/UPDATE_SCORE';
+
 
 // action creators
 // get a collection of public decks
@@ -25,6 +27,10 @@ export const clearDeck = () => ({
   type: CLEAR_DECK
 })
 
+export const updateScore = (score) => ({
+  type: UPDATE_SCORE,
+  score
+})
 
 // thunks
 // thunk for getting public decks
@@ -54,6 +60,21 @@ export const loadOwnDecksThunk = () => async dispatch => {
   }
 }
 
+export const postScoreThunk = (hits, total, deckId) => async dispatch => {
+  const data = {hits, total};
+  const res = await fetch(`${apiUrl}/users/me/decks/${deckId}/scores`, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+  })
+  if (res.ok) {
+    const maxScore = await res.json();
+    dispatch(updateScore(maxScore))
+  }
+
+}
 
 // thunk for creating decks
 export const createDeckThunk = (data) => async dispatch => {
@@ -90,6 +111,9 @@ export default function reducer(state = { byId: {}, activeDeck: { } }, action) {
     }
     case CLEAR_DECK: {
       return {...state, activeDeck: {} }
+    }
+    case UPDATE_SCORE: {
+      return {...state, activeDeck: {...state.activeDeck, maxScore: action.score.maxScore}}
     }
     default: {
       return state;
