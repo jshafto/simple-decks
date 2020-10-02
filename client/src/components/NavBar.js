@@ -112,7 +112,7 @@ const NavBar = () => {
               value={searchTerm}
               onChange={updateSearchTerm}
             />
-            <Hidden><Button type="submit" /></Hidden>
+            <button type="submit" style={{display: 'none'}}/>
             </form>
           </div>
           <Typography className={classes.title} />
