@@ -10,7 +10,7 @@ const PracticeMode = () => {
   return (
     <Container maxWidth='md'>
       <Box mt={8}>
-      <PracticeCard/>
+        <PracticeCard />
       </Box>
     </Container>
   )

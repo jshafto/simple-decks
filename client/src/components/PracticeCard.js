@@ -136,6 +136,9 @@ const PracticeCard = () => {
       if (e.keyCode === 13) {
         handleChange();
       }
+      if (e.keyCode === 40 ||e.keyCode === 38) {
+        handleChange();
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -154,7 +157,7 @@ const PracticeCard = () => {
       <Typography variant="h5" component="h5" color="textSecondary">{`${cardIndex + 1}/${Object.values(cards).length}`}</Typography>
       <Grid item>
         <Box  minHeight={500} alignItems="center" >
-          <div style={{ maxWidth: "500px", paddingTop: "50px", margin: "0 auto", color: "#494949", overflow: "hidden" }}>
+          <div style={{ maxWidth: "600px", paddingTop: "50px", margin: "0 auto", color: "#494949", overflow: "hidden" }}>
             <Grid container justify="space-between">
               <Button onClick={() => carouselChange('left')}>Prev</Button>
               <Button onClick={() => carouselChange('right')}>Next</Button>
@@ -163,7 +166,7 @@ const PracticeCard = () => {
               (Object.values(cards).length) ? (
                 <Slide maxWidth="sm" in={slideIn} direction={slideDirection} timeout={200}>
                   <div>
-                    <Box style={{ maxWidth: 500 }} key={Object.values(cards)[cardIndex].id}>
+                    <Box style={{ maxWidth: 600 }} key={Object.values(cards)[cardIndex].id}>
                       <Accordion expanded={cardOpen} onChange={handleChange}>
                         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header" >
 

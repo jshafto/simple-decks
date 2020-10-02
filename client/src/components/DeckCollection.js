@@ -63,7 +63,7 @@ const DeckCollection = () => {
               <Button size="small" color="primary" component={NavLink} to={`/practice/${deck.id}`}>
                 Practice
               </Button>
-              <Button size="small" color="primary">
+              <Button size="small" color="primary" component={NavLink} to={`/quiz/${deck.id}`}>
                 Quiz
               </Button>
               <Button size="small" color="secondary" component={NavLink} to={`/decks/${deck.id}`}>
