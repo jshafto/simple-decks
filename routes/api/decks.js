@@ -35,7 +35,7 @@ router.get('/', userInfo, asyncHandler(async (req, res, next) => {
   let offset = (req.query.offset) ? req.query.offset : 0;
   let userId = (req.user) ? req.user.id : null;
   const dbDecks = await Deck.findAll({
-    limit: 10,
+    limit: 50,
     offset,
     include: [{
       model: Category
