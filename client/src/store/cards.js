@@ -4,7 +4,10 @@ import { apiUrl } from '../config';
 export const LOAD_CARDS = '/simple-decks/cards/LOAD_CARDS';
 export const ADD_CARD= '/simple-decks/cards/ADD_CARD';
 export const CLEAR_CARDS = 'simple-decks/cards/CLEAR_CARDS';
-export const DELETE_CARD = 'simple-decks/carse/DELETE_CARD'
+export const DELETE_CARD = 'simple-decks/cards/DELETE_CARD';
+export const SET_ACTIVE_CARD = 'simple-decks/cards/SET_ACTIVE_CARD';
+export const UNSET_ACTIVE_CARD = 'simple-decks/cards/UNSET_ACTIVE_CARD';
+export const UPDATE_CARD = 'simple-decks/cards/UPDATE_CARD';
 
 
 // action creators
@@ -24,6 +27,20 @@ export const clearCards = () => ({
 export const deleteCard = (cardId) => ({
   type: DELETE_CARD,
   cardId
+})
+
+export const setActiveCard = (cardId) => ({
+  type: SET_ACTIVE_CARD,
+  cardId
+})
+
+export const unsetActiveCard = () => ({
+  type: UNSET_ACTIVE_CARD,
+})
+
+export const updateCard = (card) => ({
+  type: UPDATE_CARD,
+  card
 })
 
 // thunks
@@ -66,6 +83,24 @@ export const deleteCardThunk = (cardId) => async dispatch => {
   // error dispatch?
 }
 
+export const editCardThunk = (cardId, data) => async dispatch => {
+
+  const res = await fetch(`${apiUrl}/cards/${cardId}`, {
+    method: "PUT",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+  })
+  if (res.ok) {
+    const {card} = await res.json()
+    dispatch(updateCard(card))
+
+  }
+  // error dispatch?
+}
+
+
 
 // reducer
 
@@ -87,6 +122,20 @@ export default function reducer (state = { byId: {} }, action) {
       const id = action.cardId;
       delete newState.byId[id];
       return newState;
+    }
+    case SET_ACTIVE_CARD: {
+      return {...state, activeCard: action.cardId}
+    }
+    case UNSET_ACTIVE_CARD: {
+      const newState = {...state }
+      delete newState.activeCard;
+      return newState;
+    }
+    case UPDATE_CARD: {
+      const id = action.card.id;
+      const newCard ={};
+      newCard[id] ={...action.card};
+      return {...state, byId: {...state.byId, ...newCard }}
     }
     default: {
       return state;

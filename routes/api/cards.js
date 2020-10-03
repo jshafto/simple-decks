@@ -67,7 +67,7 @@ router.put('/:cardId(\\d+)', authenticated, cardValidators, asyncHandler(async (
   }
 
 
-  if (req.user.id !== card.deck.userId) {
+  if (req.user.id !== card.Deck.userId) {
     const err = new Error("Unauthorized");
     err.status = 401;
     err.message = "You are not authorized to access this card.";

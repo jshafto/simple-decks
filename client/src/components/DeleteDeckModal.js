@@ -44,7 +44,7 @@ const DeleteDeckModal = () => {
           <CloseIcon />
         </IconButton>
         <DialogTitle>
-          <Typography style={{ paddingRight: 20 }} variant="h6">Are you sure you want to delete your deck?</Typography>
+          <Typography style={{ paddingRight: 20 }} variant="h6">Are you sure you want to delete this deck?</Typography>
         </DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>
