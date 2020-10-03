@@ -91,7 +91,6 @@ export const createDeckThunk = (data) => async dispatch => {
     private: data.privacy,
     name: data.name
   }
-  // console.log(data);
   const res = await fetch(`${apiUrl}/decks`, {
     method: "POST",
     headers: {
