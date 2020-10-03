@@ -11,64 +11,63 @@ import HomePlex from './components/HomePlex';
 import AuthForm from './components/AuthForm';
 import Footer from './components/Footer';
 import DeckViewEdit from './components/DeckViewEdit'
-import { lightThemeObj, darkThemeObj } from './theme'
+import { lightThemeObj, darkThemeObj, themeObj } from './theme'
 import PracticeMode from './components/PracticeMode';
 import QuizMode from './components/QuizMode'
 import SearchBrowser from './components/SearchBrowser'
+import Cookies from 'js-cookie';
 
 import { createMuiTheme } from '@material-ui/core/styles';
 
+
+
 function App() {
-    // const theme = useSelector(state => (state.ui.darkTheme) ? darkTheme : lightTheme)
-    // debugger;
-
     const darkMode = useSelector(state => state.ui.darkTheme)
+    const themeType = Cookies.get('paletteType');
 
-    const [theme, setTheme] = useState(createMuiTheme(lightThemeObj));
+    const [theme, setTheme] = useState(createMuiTheme(themeObj[themeType]));
 
-    useEffect(()=> {
+    useEffect(() => {
         const newTheme = (darkMode) ? createMuiTheme(darkThemeObj) : createMuiTheme(lightThemeObj)
         setTheme(newTheme);
-
     }, [darkMode])
+
 
 
 
     return (
         <ThemeProvider theme={theme}>
-            <>
-                <CssBaseline />
-                <BrowserRouter>
-                    <NavBar />
-                    <Switch>
-                        <Route exact path={["/signin", "/signup"]}>
-                            <AuthForm />
-                        </Route>
-                        <Route exact path="/browse">
-                            <Browse />
-                        </Route>
-                        <Route exact path="/categories/:categoryId">
-                            <Browse />
-                        </Route>
-                        <Route path="/search">
-                            <SearchBrowser />
-                        </Route>
-                        <Route path="/decks/:deckId">
-                            <DeckViewEdit />
-                        </Route>
-                        <Route path="/practice/:deckId">
-                            <PracticeMode />
-                        </Route>
-                        <Route path="/quiz/:deckId">
-                            <QuizMode />
-                        </Route>
-                        <Route exact path="/">
-                            <HomePlex />
-                        </Route>
-                    </Switch>
-                </BrowserRouter>
-                <Footer />
-            </>
+            <CssBaseline />
+            <BrowserRouter>
+                <NavBar />
+                <Switch>
+                    <Route exact path={["/signin", "/signup"]}>
+                        <AuthForm />
+                    </Route>
+                    <Route exact path="/browse">
+                        <Browse />
+                    </Route>
+                    <Route exact path="/categories/:categoryId">
+                        <Browse />
+                    </Route>
+                    <Route path="/search">
+                        <SearchBrowser />
+                    </Route>
+                    <Route path="/decks/:deckId">
+                        <DeckViewEdit />
+                    </Route>
+                    <Route path="/practice/:deckId">
+                        <PracticeMode />
+                    </Route>
+                    <Route path="/quiz/:deckId">
+                        <QuizMode />
+                    </Route>
+                    <Route exact path="/">
+                        <HomePlex />
+                    </Route>
+                </Switch>
+            </BrowserRouter>
+            <Footer />
         </ThemeProvider>
     );
 }

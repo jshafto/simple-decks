@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import Cookies from 'js-cookie';
 
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -32,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
     fill: theme.palette.navIcon,
     stroke: theme.palette.navIcon,
     color: theme.palette.navIcon,
-
   },
 
   menuButton: {
@@ -58,7 +58,6 @@ const useStyles = makeStyles((theme) => ({
   },
   searchIcon: {
     color: theme.palette.navIcon,
-
     padding: theme.spacing(0, 2),
     height: '100%',
     position: 'absolute',
@@ -90,6 +89,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = () => {
   const classes = useStyles();
+  const darkMode = useSelector(state => state.ui.darkTheme)
 
   const loggedOut = useSelector(state => !state.authentication.id);
   const [searchTerm, setSearchTerm] = useState('');
@@ -120,7 +120,14 @@ const NavBar = () => {
     history.push('/')
   }
 
-  const brightnessToggle = () => dispatch(toggleTheme())
+  const brightnessToggle = () => {
+    dispatch(toggleTheme())
+    if (!darkMode) {
+      Cookies.set('paletteType', 'dark', { expires: 7 })
+    } else {
+      Cookies.set('paletteType', 'light', { expires: 7 })
+    }
+  }
 
   return (
     <div className={classes.root}>
@@ -158,29 +165,29 @@ const NavBar = () => {
             <MenuIcon />
           </IconButton>
           {(loggedOut) ? (
-          <Menu
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-                <MenuItem onClick={handleClose} component={NavLink} to={'/'}>Home</MenuItem>
-                <MenuItem onClick={handleClose} component={NavLink} to={'/browse'}>Browse</MenuItem>
-                <MenuItem onClick={handleClose} component={NavLink} to={'/signin'}>Sign in</MenuItem>
-                <MenuItem onClick={handleClose} component={NavLink} to={'/signup'}>Sign up</MenuItem>
-          </Menu>
-            ) : (
-              <Menu
+            <Menu
               anchorEl={anchorEl}
               keepMounted
               open={Boolean(anchorEl)}
               onClose={handleClose}
+            >
+              <MenuItem onClick={handleClose} component={NavLink} to={'/'}>Home</MenuItem>
+              <MenuItem onClick={handleClose} component={NavLink} to={'/browse'}>Browse</MenuItem>
+              <MenuItem onClick={handleClose} component={NavLink} to={'/signin'}>Sign in</MenuItem>
+              <MenuItem onClick={handleClose} component={NavLink} to={'/signup'}>Sign up</MenuItem>
+            </Menu>
+          ) : (
+              <Menu
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
               >
-                  <MenuItem onClick={handleClose} component={NavLink} to={'/'}>Home</MenuItem>
-                  <MenuItem onClick={handleClose} component={NavLink} to={'/browse'}>Browse</MenuItem>
-                  <MenuItem onClick={handleLogout}>Sign out</MenuItem>
+                <MenuItem onClick={handleClose} component={NavLink} to={'/'}>Home</MenuItem>
+                <MenuItem onClick={handleClose} component={NavLink} to={'/browse'}>Browse</MenuItem>
+                <MenuItem onClick={handleLogout}>Sign out</MenuItem>
               </Menu>
-              )}
+            )}
         </Toolbar>
       </AppBar>
     </div>

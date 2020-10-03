@@ -31,3 +31,9 @@ export const darkThemeObj = {
     type: 'dark'
   },
 };
+
+
+export const themeObj = {
+  light: lightThemeObj,
+  dark: darkThemeObj
+}
