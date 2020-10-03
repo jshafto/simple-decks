@@ -26,11 +26,6 @@ const CategoryButtons = () => {
 
 
 
-
-
-
-
-
   return (
     <Tabs
       value={(categoryId) ? parseInt(categoryId): 0}
