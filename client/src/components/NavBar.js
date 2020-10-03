@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -9,11 +10,14 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import LogoutButton from './LogoutButton'
 import SvgLogo from './SvgLogo';
 import SvgIcon from '@material-ui/core/SvgIcon'
 import Hidden from '@material-ui/core/Hidden'
 import Button from '@material-ui/core/Button'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+
+import { logout } from '../store/authentication';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,15 +80,33 @@ const useStyles = makeStyles((theme) => ({
 const NavBar = () => {
   const classes = useStyles();
 
+  const loggedOut = useSelector(state => !state.authentication.id);
   const [searchTerm, setSearchTerm] = useState('');
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const updateSearchTerm = (e) => setSearchTerm(e.target.value);
   const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     history.push(`/search?q=${encodeURIComponent(searchTerm)}`)
+  }
+
+  const openMenu = (e) => {
+    setAnchorEl(e.currentTarget);
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
+
+  const dispatch = useDispatch();
+
+
+  const handleLogout = () => {
+    setAnchorEl(null);
+    dispatch(logout());
+    history.push('/')
   }
 
   return (
@@ -101,25 +123,46 @@ const NavBar = () => {
               <SearchIcon />
             </div>
             <form onSubmit={handleSubmit}>
-            <InputBase
-              type='search'
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-              value={searchTerm}
-              onChange={updateSearchTerm}
-            />
-            <button type="submit" style={{display: 'none'}}/>
+              <InputBase
+                type='search'
+                placeholder="Search…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ 'aria-label': 'search' }}
+                value={searchTerm}
+                onChange={updateSearchTerm}
+              />
+              <button type="submit" style={{ display: 'none' }} />
             </form>
           </div>
           <Typography className={classes.title} />
-          <LogoutButton className={classes.logoutButton} />
-          <IconButton className={classes.menuButton} color="inherit" aria-label="menu">
+          {/* <LogoutButton className={classes.logoutButton} /> */}
+          <IconButton className={classes.menuButton} color="inherit" aria-label="menu" onClick={openMenu}>
             <MenuIcon />
           </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            {(loggedOut) ? (
+              <>
+                <MenuItem onClick={handleClose} component={NavLink} to={'/'}>Home</MenuItem>
+                <MenuItem onClick={handleClose} component={NavLink} to={'/browse'}>Browse</MenuItem>
+                <MenuItem onClick={handleClose} component={NavLink} to={'/signin'}>Sign in</MenuItem>
+                <MenuItem onClick={handleClose} component={NavLink} to={'/signup'}>Sign up</MenuItem>
+              </>
+            ) : (
+                <>
+                  <MenuItem onClick={handleClose} component={NavLink} to={'/'}>Home</MenuItem>
+                  <MenuItem onClick={handleClose} component={NavLink} to={'/browse'}>Browse</MenuItem>
+                  <MenuItem onClick={handleLogout}>Sign out</MenuItem>
+                </>
+              )}
+          </Menu>
         </Toolbar>
       </AppBar>
     </div>

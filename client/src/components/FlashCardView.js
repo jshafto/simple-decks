@@ -39,7 +39,6 @@ const FlashCardView = () => {
   const activeCard = useSelector(state => state.entities.cards.activeCard)
 
   const dispatch = useDispatch();
-  // console.log(deckId)
 
   useEffect(() => {
     dispatch(loadCardsThunk(deckId))
