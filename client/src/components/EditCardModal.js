@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useLayoutEffect,useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -15,15 +15,16 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 
 import { closeModal } from '../store/ui'
-import { createCardThunk } from '../store/cards'
+import { editCardThunk, unsetActiveCard } from '../store/cards'
 
-const NewCardModal = () => {
+const EditCardModal = () => {
 
-  const open = useSelector(state => state.ui.modal==='addCardModal');
-  const { deckId } = useParams();
+  const open = useSelector(state => state.ui.modal==='editCardModal');
+  const cardId = useSelector(state => state.entities.cards.activeCard);
+  const card = useSelector(state => state.entities.cards.byId[cardId])
   const dispatch = useDispatch();
-  const [front, setFront] = useState();
-  const [back, setBack] = useState();
+  const [front, setFront] = useState('');
+  const [back, setBack] = useState('');
 
   const updateFront = e => setFront(e.target.value)
   const updateBack = e => setBack(e.target.value);
@@ -31,12 +32,20 @@ const NewCardModal = () => {
 
   const handleClose = () => {
     dispatch(closeModal());
+    dispatch(unsetActiveCard())
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createCardThunk(deckId, { front, back }));
+    dispatch(editCardThunk(cardId, { front, back }));
     dispatch(closeModal());
   };
+
+  useEffect(() => {
+    if (card) {
+      setFront(card.front);
+      setBack(card.back);
+    }
+  },[cardId, card])
 
   return (
     <div>
@@ -51,7 +60,7 @@ const NewCardModal = () => {
           <CloseIcon />
         </IconButton>
         <DialogTitle>
-          <Typography style={{ paddingRight: 20 }} variant="h6">New card</Typography>
+          <Typography style={{ paddingRight: 20 }} variant="h6">Edit card</Typography>
         </DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>
@@ -98,4 +107,4 @@ const NewCardModal = () => {
   );
 }
 
-export default NewCardModal;
+export default EditCardModal;

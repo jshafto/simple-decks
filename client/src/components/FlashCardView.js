@@ -14,9 +14,10 @@ import EditIcon from '@material-ui/icons/Edit';
 import CloseIcon from '@material-ui/icons/Close'
 import IconButton from '@material-ui/core/IconButton'
 
-import { loadCardsThunk, clearCards, deleteCardThunk } from '../store/cards';
+import { loadCardsThunk, clearCards, deleteCardThunk, setActiveCard } from '../store/cards';
 import { openModal } from '../store/ui';
 import NewCardModal from './NewCardModal';
+import EditCardModal from './EditCardModal';
 
 // import ReactMarkdown from 'react-markdown';
 import Markdown from 'markdown-to-jsx';
@@ -35,6 +36,7 @@ const FlashCardView = () => {
   const flashcards = useSelector(state => state.entities.cards.byId);
   const deckCreatorId = useSelector(state => state.entities.decks.activeDeck.creatorId);
   const userId = useSelector(state => state.authentication.id);
+  const activeCard = useSelector(state => state.entities.cards.activeCard)
 
   const dispatch = useDispatch();
   // console.log(deckId)
@@ -52,6 +54,16 @@ const FlashCardView = () => {
     dispatch(deleteCardThunk(e.currentTarget.id))
   }
 
+  const handleEdit = e => {
+    dispatch(setActiveCard(e.currentTarget.id))
+  }
+
+  useEffect(() => {
+    if (activeCard) {
+      dispatch(openModal('editCardModal'));
+    }
+  }, [activeCard])
+
   return (
     // <TableContainer component={Paper}>
     <Table className={classes.table} aria-label="flashcard-table">
@@ -60,7 +72,7 @@ const FlashCardView = () => {
         <TableRow>
           <TableCell align="left" width={(userId === deckCreatorId) ? "40%" : "50%"}>Front</TableCell>
           <TableCell align="left" width={(userId === deckCreatorId) ? "40%" : "50%"}>Back</TableCell>
-          <TableCell><NewCardModal /></TableCell>
+          <TableCell><NewCardModal /><EditCardModal /></TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -74,7 +86,7 @@ const FlashCardView = () => {
             </TableCell>
             {(userId === deckCreatorId) ? (
               <TableCell align="right" size="small" style={{ verticalAlign: 'top' }}>
-                <IconButton>
+                <IconButton id={flashcard.id} onClick={handleEdit}>
                   <EditIcon />
                 </IconButton>
                 <IconButton id={flashcard.id} onClick={handleDelete}>
