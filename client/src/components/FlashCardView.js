@@ -14,7 +14,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import CloseIcon from '@material-ui/icons/Close'
 import IconButton from '@material-ui/core/IconButton'
 
-import { loadCardsThunk, clearCards } from '../store/cards';
+import { loadCardsThunk, clearCards, deleteCardThunk } from '../store/cards';
 import { openModal } from '../store/ui';
 import NewCardModal from './NewCardModal';
 
@@ -48,6 +48,9 @@ const FlashCardView = () => {
     dispatch(openModal('addCardModal'));
   }
 
+  const handleDelete = (e) => {
+    dispatch(deleteCardThunk(e.currentTarget.id))
+  }
 
   return (
     // <TableContainer component={Paper}>
@@ -74,11 +77,11 @@ const FlashCardView = () => {
                 <IconButton>
                   <EditIcon />
                 </IconButton>
-                <IconButton>
+                <IconButton id={flashcard.id} onClick={handleDelete}>
                   <CloseIcon />
                 </IconButton>
               </TableCell>
-            ) : <div />}
+            ) : <TableCell />}
           </TableRow>
         ))}
 

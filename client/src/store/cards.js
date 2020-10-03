@@ -4,6 +4,7 @@ import { apiUrl } from '../config';
 export const LOAD_CARDS = '/simple-decks/cards/LOAD_CARDS';
 export const ADD_CARD= '/simple-decks/cards/ADD_CARD';
 export const CLEAR_CARDS = 'simple-decks/cards/CLEAR_CARDS';
+export const DELETE_CARD = 'simple-decks/carse/DELETE_CARD'
 
 
 // action creators
@@ -20,6 +21,11 @@ export const clearCards = () => ({
   type: CLEAR_CARDS
 })
 
+export const deleteCard = (cardId) => ({
+  type: DELETE_CARD,
+  cardId
+})
+
 // thunks
 export const loadCardsThunk = (deckId) => async dispatch => {
   const res = await fetch(`${apiUrl}/decks/${deckId}/cards`);
@@ -32,7 +38,7 @@ export const loadCardsThunk = (deckId) => async dispatch => {
 }
 
 export const createCardThunk = (deckId, data) => async dispatch => {
-  console.log(data)
+
   const res = await fetch(`${apiUrl}/decks/${deckId}/cards`, {
     method: "POST",
     headers: {
@@ -46,6 +52,21 @@ export const createCardThunk = (deckId, data) => async dispatch => {
   }
   // error dispatch?
 }
+
+
+
+export const deleteCardThunk = (cardId) => async dispatch => {
+
+  const res = await fetch(`${apiUrl}/cards/${cardId}`, {
+    method: "DELETE",
+  })
+  if (res.ok) {
+    dispatch(deleteCard(cardId))
+  }
+  // error dispatch?
+}
+
+
 // reducer
 
 export default function reducer (state = { byId: {} }, action) {
@@ -60,6 +81,12 @@ export default function reducer (state = { byId: {} }, action) {
     }
     case CLEAR_CARDS: {
       return {...state, byId: {}}
+    }
+    case DELETE_CARD: {
+      const newState = {...state, byId: {...state.byId}};
+      const id = action.cardId;
+      delete newState.byId[id];
+      return newState;
     }
     default: {
       return state;

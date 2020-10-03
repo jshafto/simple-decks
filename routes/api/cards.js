@@ -5,7 +5,6 @@ const { check, validationResult } = require('express-validator');
 const { authenticated, userInfo } = require('./security-utils');
 const router = express();
 
-const router = express();
 const cardValidators = [
   check('front').notEmpty(),
   check('back').notEmpty()
@@ -23,7 +22,7 @@ const cardNotFoundError = (id) => {
 };
 
 // get a card
-router.get('/:cardId(\\d+)', userInfo, asyncHandler(async (res, req, next) => {
+router.get('/:cardId(\\d+)', userInfo, asyncHandler(async (req, res, next) => {
   const cardId = req.params.cardId;
   const card = await Card.findByPk(cardId, {
     include: [{
@@ -98,7 +97,7 @@ router.delete('/:cardId(\\d+)', authenticated, asyncHandler(async (req, res, nex
   }
 
 
-  if (req.user.id !== card.deck.userId) {
+  if (req.user.id !== card.Deck.userId) {
     const err = new Error("Unauthorized");
     err.status = 401;
     err.message = "You are not authorized to delete this card.";
@@ -107,7 +106,7 @@ router.delete('/:cardId(\\d+)', authenticated, asyncHandler(async (req, res, nex
   }
 
   await card.destroy();
-  res.json({ message: `Deleted card with id of ${deckId}.` });
+  res.json({ message: `Deleted card with id of ${cardId}.` });
 }))
 
 
