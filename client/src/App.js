@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux'
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles'
@@ -10,14 +11,29 @@ import HomePlex from './components/HomePlex';
 import AuthForm from './components/AuthForm';
 import Footer from './components/Footer';
 import DeckViewEdit from './components/DeckViewEdit'
-import theme from './theme'
+import { lightThemeObj, darkThemeObj, themeObj } from './theme'
 import PracticeMode from './components/PracticeMode';
 import QuizMode from './components/QuizMode'
 import SearchBrowser from './components/SearchBrowser'
+import Cookies from 'js-cookie';
+
+import { createMuiTheme } from '@material-ui/core/styles';
 
 
 
 function App() {
+    const darkMode = useSelector(state => state.ui.darkTheme)
+    const themeType = Cookies.get('paletteType');
+
+    const [theme, setTheme] = useState(createMuiTheme(themeObj[themeType]));
+
+    useEffect(() => {
+        const newTheme = (darkMode) ? createMuiTheme(darkThemeObj) : createMuiTheme(lightThemeObj)
+        setTheme(newTheme);
+    }, [darkMode])
+
+
+
 
     return (
         <ThemeProvider theme={theme}>

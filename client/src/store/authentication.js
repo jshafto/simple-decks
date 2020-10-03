@@ -34,7 +34,6 @@ export const login = (email, password) => async dispatch => {
 
 export const logout = () => async (dispatch) => {
   const authToken = Cookies.get("token");
-  console.log(authToken);
   const response = await fetch(`${apiUrl}/session`, {
     method: 'delete',
   });

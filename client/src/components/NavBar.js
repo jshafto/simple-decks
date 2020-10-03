@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import Cookies from 'js-cookie';
 
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -15,20 +16,28 @@ import SvgIcon from '@material-ui/core/SvgIcon'
 import Hidden from '@material-ui/core/Hidden'
 import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
+import MenuItem from '@material-ui/core/MenuItem';
+import BrightnessMediumIcon from '@material-ui/icons/BrightnessMedium';
 
 import { logout } from '../store/authentication';
+import { toggleTheme } from '../store/ui'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  logoicon: {
-    fill: theme.palette.background.default,
-    stroke: theme.palette.background.default,
+  navBar: {
+    background: theme.palette.nav
   },
+  logoicon: {
+    fill: theme.palette.navIcon,
+    stroke: theme.palette.navIcon,
+    color: theme.palette.navIcon,
+  },
+
   menuButton: {
     marginRight: theme.spacing(2),
+    color: theme.palette.navIcon,
   },
   title: {
     flexGrow: 1,
@@ -48,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   searchIcon: {
+    color: theme.palette.navIcon,
     padding: theme.spacing(0, 2),
     height: '100%',
     position: 'absolute',
@@ -79,6 +89,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = () => {
   const classes = useStyles();
+  const darkMode = useSelector(state => state.ui.darkTheme)
 
   const loggedOut = useSelector(state => !state.authentication.id);
   const [searchTerm, setSearchTerm] = useState('');
@@ -109,9 +120,18 @@ const NavBar = () => {
     history.push('/')
   }
 
+  const brightnessToggle = () => {
+    dispatch(toggleTheme())
+    if (!darkMode) {
+      Cookies.set('paletteType', 'dark', { expires: 7 })
+    } else {
+      Cookies.set('paletteType', 'light', { expires: 7 })
+    }
+  }
+
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.navBar}>
         <Toolbar>
           <IconButton component={NavLink} to="/">
             <SvgIcon className={classes.logoicon}>
@@ -138,31 +158,36 @@ const NavBar = () => {
             </form>
           </div>
           <Typography className={classes.title} />
-          {/* <LogoutButton className={classes.logoutButton} /> */}
+          <IconButton className={classes.menuButton} onClick={brightnessToggle}>
+            <BrightnessMediumIcon />
+          </IconButton>
           <IconButton className={classes.menuButton} color="inherit" aria-label="menu" onClick={openMenu}>
             <MenuIcon />
           </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            {(loggedOut) ? (
-              <>
+          {(loggedOut) ? (
+            <Menu
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleClose} component={NavLink} to={'/'}>Home</MenuItem>
+              <MenuItem onClick={handleClose} component={NavLink} to={'/browse'}>Browse</MenuItem>
+              <MenuItem onClick={handleClose} component={NavLink} to={'/signin'}>Sign in</MenuItem>
+              <MenuItem onClick={handleClose} component={NavLink} to={'/signup'}>Sign up</MenuItem>
+            </Menu>
+          ) : (
+              <Menu
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
                 <MenuItem onClick={handleClose} component={NavLink} to={'/'}>Home</MenuItem>
                 <MenuItem onClick={handleClose} component={NavLink} to={'/browse'}>Browse</MenuItem>
-                <MenuItem onClick={handleClose} component={NavLink} to={'/signin'}>Sign in</MenuItem>
-                <MenuItem onClick={handleClose} component={NavLink} to={'/signup'}>Sign up</MenuItem>
-              </>
-            ) : (
-                <>
-                  <MenuItem onClick={handleClose} component={NavLink} to={'/'}>Home</MenuItem>
-                  <MenuItem onClick={handleClose} component={NavLink} to={'/browse'}>Browse</MenuItem>
-                  <MenuItem onClick={handleLogout}>Sign out</MenuItem>
-                </>
-              )}
-          </Menu>
+                <MenuItem onClick={handleLogout}>Sign out</MenuItem>
+              </Menu>
+            )}
         </Toolbar>
       </AppBar>
     </div>
