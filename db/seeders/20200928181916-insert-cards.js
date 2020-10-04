@@ -14,8 +14,8 @@ module.exports = {
       return deck.id;
     }
 
-    const getRandFront = () => faker.lorem.sentence();
-    const getRandBack = () => faker.lorem.paragraph();
+    const getRandFront = () => faker.random.words(8);
+    const getRandBack = () => faker.random.words(25);
 
     const r = async (o) => {
       o.deckId = await getRandDeck();
@@ -27,7 +27,7 @@ module.exports = {
     }
     const cardMaker = async () => {
       let arr = [];
-      for (let i = 0; i < 150; i++) {
+      for (let i = 0; i < 1000; i++) {
         const next = await r({})
         arr.push(next);
       }

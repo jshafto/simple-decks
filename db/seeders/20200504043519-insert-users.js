@@ -1,7 +1,7 @@
 'use strict';
 
 const bcrypt = require('bcryptjs');
-
+const faker = require('faker');
 function createPassword() {
   return bcrypt.hashSync('somethingmoresecurethanpassword');
 }
@@ -28,6 +28,53 @@ module.exports = {
       r({ username: 'morcymbaldog', email: 'morecymbaldog@example.com', hashedPassword: createPassword() }),
       r({ username: 'recyclecat', email: 'recyclecay@example.com', hashedPassword: createPassword() }),
       r({ username: 'pastaman', email: 'pastaman@example.com', hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
+      r({ username: faker.internet.userName(), email: faker.internet.email(), hashedPassword: createPassword() }),
     ]);
   },
 
