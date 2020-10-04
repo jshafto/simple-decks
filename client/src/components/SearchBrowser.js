@@ -2,17 +2,14 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {useLocation} from 'react-router-dom';
 
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
+
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import DeckCollection from './DeckCollection'
 import { loadSearchDecksThunk, clearDeck } from '../store/decks';
-import {openModal} from '../store/ui'
 import NewDeckModal from './NewDeckModal';
-import CategoryButtons from './CategoryButtons';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -20,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   heroContent: {
-    backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(8, 0, 6),
   },
   heroButtons: {
@@ -33,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DeckBrowser = () => {
-  const getQueryString = (string) => decodeURIComponent(string.match(/[\&\?]q=([^\&]*)/)[1])
+  const getQueryString = (string) => decodeURIComponent(string.match(/[&?]q=([^&]*)/)[1])
 
 
   const location = useLocation();
@@ -46,7 +42,7 @@ const DeckBrowser = () => {
   useEffect(() => {
     dispatch(clearDeck());
     dispatch(loadSearchDecksThunk(getQueryString(location.search)));
-  }, [location]);
+  }, [location, dispatch]);
 
   // const openNewDeckModal = () => {
   //   dispatch(openModal('newDeckModal'));

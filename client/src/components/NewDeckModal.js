@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom';
+import {  useHistory } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton'
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import Switch from '@material-ui/core/Switch'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -20,16 +19,7 @@ import { createDeckThunk, clearDeck } from '../store/decks'
 import { loadCategoriesThunk, clearCategories } from '../store/categories';
 
 
-// const tempCategories = [
-//   {id: 22, label: 'cool stuff'},
-//   {id: 3, label: 'widgets'},
-//   {id: 11, label: 'hootenanny'},
-// ]
-// const tempCategories = {
-//   '1': {id: 75, label: 'Computer Science'},
-//   '2': {id: 3, label: 'widgets'},
-//   '3': {id: 11, label: 'hootenanny'},
-// }
+
 
 const NewDeckModal = () => {
   const [isNotFirstMount, setIsNotFirstMount] = useState(false);
@@ -57,13 +47,13 @@ const NewDeckModal = () => {
       history.push(`/decks/${activeDeck.id}`)
     }
     setIsNotFirstMount(true);
-  }, [activeDeck])
+  }, [activeDeck, history])
 
 
   useEffect(() => {
     dispatch(loadCategoriesThunk());
     return () => dispatch(clearCategories());
-  }, [])
+  }, [dispatch])
 
 
   const handleClose = () => {
@@ -79,11 +69,18 @@ const NewDeckModal = () => {
   return (
     <div>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth={true}>
-        <DialogActions>
-          <IconButton onClick={handleClose}>
-            <CloseIcon />
-          </IconButton>
-        </DialogActions>
+        <IconButton
+          style={{
+            position: 'absolute',
+            right: 2,
+            top: 2,
+          }}
+          onClick={handleClose}>
+          <CloseIcon />
+        </IconButton>
+        <DialogTitle style={{ paddingRight: 20 }}>
+          Create a new deck
+        </DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>
             <TextField
@@ -106,6 +103,7 @@ const NewDeckModal = () => {
               renderInput={(params) => <TextField {...params} label="Category" variant="outlined" margin="normal" required />}
               onChange={updateCategory}
             />
+            <Grid container justify="space-between">
             <FormControlLabel
               control={<Switch checked={privacy} onChange={updatePrivacy} name="privacy" />}
               label="Private (only you will be able to see this deck)"
@@ -113,6 +111,7 @@ const NewDeckModal = () => {
             <Button type="submit" color="primary">
               Submit
             </Button>
+            </Grid>
           </form>
         </DialogContent>
       </Dialog>

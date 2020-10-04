@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useDispatch} from 'react-redux';
 
 import {NavLink} from 'react-router-dom';
 
@@ -20,30 +19,25 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   heroContent: {
-    backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(8, 0, 6),
   },
   heroButtons: {
     marginTop: theme.spacing(4),
   },
   cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
   },
 }));
 
 const DashboardBrowser = () => {
   const classes = useStyles();
-
-
-
-
-
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(clearDeck());
     dispatch(loadOwnDecksThunk());
-  }, []);
+  }, [dispatch]);
 
   const openNewDeckModal = () => {
     dispatch(openModal('newDeckModal'));

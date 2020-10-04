@@ -1,14 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/styles';
 
-
-// const useStyles = makeStyles((theme)=> ({
-//   outline: {
-//     stroke: theme.palette.text.secondary,
-//   }
-// }));
 const SvgLogo = () => {
-  // const classes= useStyles();
   return (
       <>
         <rect x="3.7878" y=".5632" width="16.931" height="22.951" ry="2.4359" fillOpacity="0.0"  strokeLinecap="round" strokeWidth="2"  />

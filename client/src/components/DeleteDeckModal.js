@@ -3,12 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton'
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid'
 
 import { closeModal } from '../store/ui'
@@ -43,8 +41,8 @@ const DeleteDeckModal = () => {
           onClick={handleClose}>
           <CloseIcon />
         </IconButton>
-        <DialogTitle>
-          <Typography style={{ paddingRight: 20 }} variant="h6">Are you sure you want to delete this deck?</Typography>
+        <DialogTitle style={{ paddingRight: 20 }}>
+          Are you sure you want to delete this deck?
         </DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>

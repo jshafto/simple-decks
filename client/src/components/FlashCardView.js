@@ -43,7 +43,7 @@ const FlashCardView = () => {
   useEffect(() => {
     dispatch(loadCardsThunk(deckId))
     return () => dispatch(clearCards());
-  }, [deckId])
+  }, [deckId, dispatch])
 
   const handleClickOpen = () => {
     dispatch(openModal('addCardModal'));
@@ -61,7 +61,7 @@ const FlashCardView = () => {
     if (activeCard) {
       dispatch(openModal('editCardModal'));
     }
-  }, [activeCard])
+  }, [activeCard, dispatch])
 
   return (
     // <TableContainer component={Paper}>
