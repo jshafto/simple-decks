@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory, NavLink } from 'react-router-dom'
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -23,21 +23,18 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   heroContent: {
-    backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(8, 0, 6),
   },
   heroButtons: {
     marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
   },
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-  },
+
 }));
 
 
 const DeckViewEdit = () => {
-  const history =  useHistory();
+  const history = useHistory();
 
 
   const classes = useStyles();
@@ -54,7 +51,7 @@ const DeckViewEdit = () => {
   useEffect(() => {
     dispatch(loadDeckThunk(deckId));
     return () => dispatch(clearDeck())
-  }, [])
+  }, [deckId, dispatch])
 
   const firstUpdate = useRef(true);
   useEffect(() => {
@@ -66,7 +63,7 @@ const DeckViewEdit = () => {
       history.push("/")
     }
 
-  }, [deck]);
+  }, [deck, history]);
 
   const handleClickOpen = () => {
     dispatch(openModal('addCardModal'));
@@ -93,21 +90,31 @@ const DeckViewEdit = () => {
           </Typography>
 
           {(userId === deck.creatorId) ? (
-          <div className={classes.heroButtons}>
-            <DeleteDeckModal />
-            <Grid container spacing={2} >
-              <Grid item>
-                <Button variant="contained" color="primary" onClick={handleClickOpen}>
-                  Add Card
+            <div className={classes.heroButtons}>
+              <DeleteDeckModal />
+              <Grid container spacing={2} >
+                <Grid item>
+                  <Button variant="contained" color="primary" onClick={handleClickOpen}>
+                    Add Card
                   </Button>
-              </Grid>
-              <Grid item>
-                <Button variant="outlined" color="secondary" onClick={handleDeleteClickOpen}>
-                  Delete deck
+                </Grid>
+                <Grid item>
+                  <Button variant="contained" color="primary" component={NavLink} to={`/practice/${deckId}`}>
+                    Practice
                   </Button>
+                </Grid>
+                <Grid item>
+                  <Button variant="contained" color="primary" component={NavLink} to={`/quiz/${deckId}`}>
+                    quiz
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button variant="outlined" color="secondary" onClick={handleDeleteClickOpen}>
+                    Delete deck
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          </div>
+            </div>
 
           ) : <div />}
           <TableContainer component={Paper}>

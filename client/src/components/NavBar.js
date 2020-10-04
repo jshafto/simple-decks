@@ -13,8 +13,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import SvgLogo from './SvgLogo';
 import SvgIcon from '@material-ui/core/SvgIcon'
-import Hidden from '@material-ui/core/Hidden'
-import Button from '@material-ui/core/Button'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem';
 import BrightnessMediumIcon from '@material-ui/icons/BrightnessMedium';
@@ -37,6 +35,10 @@ const useStyles = makeStyles((theme) => ({
 
   menuButton: {
     marginRight: theme.spacing(2),
+    color: theme.palette.navIcon,
+  },
+ brightnessButton: {
+    marginLeft: theme.spacing(2),
     color: theme.palette.navIcon,
   },
   title: {
@@ -158,7 +160,7 @@ const NavBar = () => {
             </form>
           </div>
           <Typography className={classes.title} />
-          <IconButton className={classes.menuButton} onClick={brightnessToggle}>
+          <IconButton className={classes.brightnessButton} onClick={brightnessToggle}>
             <BrightnessMediumIcon />
           </IconButton>
           <IconButton className={classes.menuButton} color="inherit" aria-label="menu" onClick={openMenu}>

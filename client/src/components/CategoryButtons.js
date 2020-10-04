@@ -12,17 +12,16 @@ import { loadCategoriesThunk, clearCategories } from '../store/categories';
 
 
 const CategoryButtons = () => {
-
   const { categoryId } = useParams();
-
   const dispatch = useDispatch();
-
   const categories = useSelector(state => state.entities.categories.byId)
+
+
 
   useEffect(() => {
     dispatch(loadCategoriesThunk());
     return () => dispatch(clearCategories());
-  }, [])
+  }, [dispatch])
 
 
 
@@ -34,7 +33,7 @@ const CategoryButtons = () => {
       variant="scrollable"
       scrollButtons="auto">
         <Tab value={0} label="View All" component={NavLink} to={`/browse`} />
-      {Object.values(categories).map((cat,ind) => (
+      {Object.values(categories).map((cat) => (
         <Tab value={cat.id} label={cat.label} key={cat.id} component={NavLink} to={`/categories/${cat.id}`} />
       ))}
     </Tabs>

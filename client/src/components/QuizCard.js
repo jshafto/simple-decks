@@ -2,25 +2,20 @@
 // https://levelup.gitconnected.com/adding-transitions-to-a-react-carousel-with-material-ui-b95825653c1b
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, NavLink } from 'react-router-dom';
 
 import Markdown from 'markdown-to-jsx';
-import Grow from '@material-ui/core/Grow';
-import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
-import CardContent from '@material-ui/core/CardContent';
-import MuiAccordion from '@material-ui/core/Accordion'
-import MuiAccordionSummary from '@material-ui/core/AccordionSummary'
-import MuiAccordionDetails from '@material-ui/core/AccordionDetails'
-import Box from '@material-ui/core/Box'
-import Button from '@material-ui/core/Button'
-import Slide from '@material-ui/core/Slide'
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import MuiAccordion from '@material-ui/core/Accordion';
+import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
+import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Slide from '@material-ui/core/Slide';
 import { loadCardsThunk, clearCards } from '../store/cards';
-import { loadDeckThunk, clearDeck, postScoreThunk } from '../store/decks'
-import AccordionActions from '@material-ui/core/AccordionActions';
+import { loadDeckThunk,  postScoreThunk } from '../store/decks';
+import Link from '@material-ui/core/Link'
 
 
 import { withStyles } from '@material-ui/core'
@@ -69,11 +64,6 @@ const AccordionDetails = withStyles((theme) => ({
   },
 }))(MuiAccordionDetails);
 
-// const cards = [
-//   { front: 'hello1', back: 'goodbye1', id: '1' },
-//   { front: 'hello2', back: 'goodbye2', id: '2' },
-//   { front: 'hello3', back: 'goodbye3', id: '3' }
-// ]
 
 const QuizCard = () => {
 
@@ -88,12 +78,12 @@ const QuizCard = () => {
 
   useEffect(() => {
     dispatch(loadDeckThunk(deckId));
-    return () => dispatch(clearDeck())
-  }, [])
+    // return () => dispatch(clearDeck())
+  }, [deckId, dispatch])
   useEffect(() => {
     dispatch(loadCardsThunk(deckId))
     return () => dispatch(clearCards());
-  }, [deckId])
+  }, [deckId, dispatch])
 
 
 
@@ -109,7 +99,17 @@ const QuizCard = () => {
   const [score, setScore] = useState(0);
   const [answered, setAnswered] = useState(false);
 
+
+  /// THERE IS STILL A TERRIBLE ISSUE WHERE IF A DECK HAS A SINGLE CARD IT CAN'T HANDLE
+  // SCORE CORRECTLY ugh
   const [deckFinished, setDeckFinished] = useState(false);
+
+  useEffect(()=> {
+    if ((cardIndex+1)===Object.values(cards).length) {
+      setDeckFinished(true);
+    }
+  }, [cardIndex, cards])
+
 
   const handleGotIt = () => {
     const newScore = score + 1;
@@ -123,30 +123,28 @@ const QuizCard = () => {
   }
 
   const handleSubmitScore = () => {
-    // dispatch
     dispatch(postScoreThunk(score, Object.values(cards).length, deckId))
-    // reset
     setDeckFinished(false);
+
     setScore(0);
-
-
   }
 
   const handleChange = () => {
     setCardOpen((prev) => !prev);
   };
-  const carouselChange = (direction) => {
+  const carouselChange = () => {
     setCardOpen(false);
-    const increment = direction === 'left' ? -1 : 1;
-    if ((cardIndex + 1+increment) === Object.values(cards).length && !deckFinished) {
-      setDeckFinished(true);
+    const increment = 1;
+    let newCardIndex;
+    if ((cardIndex+1)===Object.values(cards).length) {
+      newCardIndex=0;
+
+    } else {
+      newCardIndex = (cardIndex + increment );
     }
 
-
-    const newCardIndex = (cardIndex + increment + Object.values(cards).length) % Object.values(cards).length;
-
-    const oppDirection = direction === 'left' ? 'right' : 'left';
-    setSlideDirection(direction);
+    const oppDirection = 'left';
+    setSlideDirection('right');
     setSlideIn(false);
 
     setAnswered(false);
@@ -169,7 +167,7 @@ const QuizCard = () => {
       if (e.keyCode === 13) {
         handleChange();
       }
-      if (e.keyCode === 40 ||e.keyCode === 38) {
+      if (e.keyCode === 40 || e.keyCode === 38) {
         handleChange();
       }
     };
@@ -183,33 +181,41 @@ const QuizCard = () => {
 
 
   return (
-    // <Paper variant="outline">
     <Grid container direction="column">
       <Typography variant="h3" component="h2">{deck.name}</Typography>
+      <Typography color="textSecondary" variant="h4" component="h3">{deck.category}</Typography>
       <Typography>{(deck.maxScore) ? `Best Score: ${deck.maxScore}` : "No previous scores"}</Typography>
-      <Typography variant="h5" component="h5" color="textSecondary">{`${cardIndex + 1}/${Object.values(cards).length}`}</Typography>
-      <Grid item>
-        <Box minHeight={500} alignItems="center" >
-          <div style={{ maxWidth: "600px", paddingTop: "50px", margin: "0 auto", color: "#494949", overflow: "hidden" }}>
-        <Typography align="center" variant="h4" component="h5">{`Score: ${score}/${Object.values(cards).length}`}</Typography>
-            <Grid container justify="center">
+      <Grid container>
+        <Button component={NavLink} to={`/decks/${deckId}`}>View deck</Button>
+        <Button component={NavLink} to={`/practice/${deckId}`}>Practice</Button>
+      </Grid>
+      {
+        (Object.values(cards).length) ? (
 
-              <Button disabled={answered} style={{ margin: 4 }} color="primary" variant="contained" onClick={handleGotIt}>Got it</Button>
-              <Button disabled={answered}style={{ margin: 4 }} color="secondary" variant="contained" onClick={handleNoGotIt} >Didn't get it</Button>
+          <Grid item>
+            <Box minHeight={500} alignItems="center" >
+              <div style={{ maxWidth: "600px", paddingTop: "50px", margin: "0 auto", color: "#494949", overflow: "hidden" }}>
+                <Typography align="center" variant="h4" component="h5">{`Score: ${score}/${Object.values(cards).length}`}</Typography>
+                <Grid container justify="center">
 
-            </Grid>
-            <Grid container justify="flex-end">
-              {(deckFinished) ? (
-                <Button color="primary" disabled={!answered} onClick={handleSubmitScore}>Save Score</Button>
-              ) :
-              (
-                <Button disabled={!answered} onClick={() => carouselChange('right')}>Next</Button>
-              )
-            }
-            </Grid>
-            {
-              (Object.values(cards).length) ? (
-                <Slide maxWidth="sm" in={slideIn} direction={slideDirection} timeout={200}>
+                  <Button disabled={answered} style={{ margin: 4 }} color="primary" variant="contained" onClick={handleGotIt}>Got it</Button>
+                  <Button disabled={answered} style={{ margin: 4 }} color="secondary" variant="contained" onClick={handleNoGotIt} >Didn't get it</Button>
+
+                </Grid>
+                <Grid container justify="space-between" alignItems="center">
+                  <Grid item />
+                  <><Typography color="textSecondary">{`${cardIndex + 1}/${Object.values(cards).length}`}</Typography></>
+                  {(deckFinished) ? (
+                    <Button color="primary" disabled={!answered} onClick={handleSubmitScore}>Save Score</Button>
+                  ) :
+                    (
+                      <Button disabled={!answered} onClick={() => carouselChange()}>
+                        {(cardIndex+1>=Object.values(cards).length) ? "Start over" : "Next"}
+                      </Button>
+                    )
+                  }
+                </Grid>
+                <Slide in={slideIn} direction={slideDirection} timeout={200}>
                   <div>
                     <Box style={{ maxWidth: 600 }} key={Object.values(cards)[cardIndex].id}>
                       <Accordion expanded={cardOpen} onChange={handleChange}>
@@ -233,13 +239,16 @@ const QuizCard = () => {
                   </div>
                 </Slide>
 
-              ) : (<CircularProgress />)
-            }
-          </div>
-        </Box>
-      </Grid>
+              </div>
+            </Box>
+          </Grid>
+        ) : (<Typography color="textSecondary">
+          {`There are no cards in this deck to quiz yourself on. Why not `}
+          <Link component={NavLink} style={{ color: "secondary", textDecoration: "none" }} to={`/decks/${deckId}`}>{`add some cards`}
+          </Link>?
+        </Typography>)
+      }
     </Grid>
-    // </Paper>
   )
 }
 

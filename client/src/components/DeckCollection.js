@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
@@ -13,17 +13,11 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { formatRelative } from 'date-fns';
 
-import { clearDeck } from '../store/decks';
-
-
 const useStyles = makeStyles((theme) => ({
   deck: {
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
-  },
-  deckMedia: {
-    paddingTop: '56.25%', // 16:9
   },
   deckContent: {
     flexGrow: 1,
@@ -38,13 +32,9 @@ const DeckCollection = () => {
   const userId = useSelector(state => state.authentication.id);
   const deckCollection = useSelector(state => state.entities.decks.byId);
   const [decklist, setDecklist] = useState([]);
-  // const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(clearDeck());
-  // }, [])
   useEffect(() => {
-    let newDecklist = (categoryId) ? Object.values(deckCollection).filter(deck => deck.categoryId===parseInt(categoryId)) : Object.values(deckCollection)
+    let newDecklist = (categoryId) ? Object.values(deckCollection).filter(deck => deck.categoryId === parseInt(categoryId)) : Object.values(deckCollection)
     setDecklist(newDecklist);
   }, [deckCollection, categoryId]);
 
@@ -54,15 +44,20 @@ const DeckCollection = () => {
       {decklist.map((deck) => (
         <Grid item key={deck.id} xs={12} sm={6} md={4}>
           <Card className={classes.deck}>
+          {/* makes whole card clickable */}
+          {/* <Card className={classes.deck} component={NavLink} to={`/decks/${deck.id}`} style={{ textDecoration: 'none' }}> */}
             <CardContent className={classes.deckContent}>
               <Typography gutterBottom variant="h5" component="h2">
                 {deck.name}
               </Typography>
               <Typography gutterBottom>
-                {(!deck.maxScore) ? `No previous scores` : `Best Score: ${deck.maxScore}`}
+                {deck.category}
               </Typography>
-              <Typography variant="caption">
+              <Typography variant="caption" display="block">
                 {`Created by ${deck.creator} ${formatRelative(new Date(deck.createdAt), new Date())}`}
+              </Typography>
+              <Typography variant="caption" display="block">
+                {(!deck.maxScore) ? `No previous scores` : `Best Score: ${deck.maxScore}/${deck.numCards}`}
               </Typography>
             </CardContent>
             <CardActions>
@@ -70,10 +65,10 @@ const DeckCollection = () => {
                 Practice
               </Button>
               {(userId) ? (
-              <Button size="small" color="primary" component={NavLink} to={`/quiz/${deck.id}`}>
-                Quiz
-              </Button>
-              ) : <div/>}
+                <Button size="small" color="primary" component={NavLink} to={`/quiz/${deck.id}`}>
+                  Quiz
+                </Button>
+              ) : <div />}
               <Button size="small" color="primary" component={NavLink} to={`/decks/${deck.id}`}>
                 View
               </Button>

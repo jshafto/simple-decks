@@ -1,24 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, NavLink } from 'react-router-dom';
 
 import Markdown from 'markdown-to-jsx';
-import Grow from '@material-ui/core/Grow';
-import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
-import CardContent from '@material-ui/core/CardContent';
-import MuiAccordion from '@material-ui/core/Accordion'
+import Grid from '@material-ui/core/Grid';
+import MuiAccordion from '@material-ui/core/Accordion';
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary'
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Slide from '@material-ui/core/Slide'
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { loadCardsThunk, clearCards } from '../store/cards';
-import { loadDeckThunk, clearDeck } from '../store/decks'
-import AccordionActions from '@material-ui/core/AccordionActions'
+import { loadDeckThunk } from '../store/decks'
+import Link from '@material-ui/core/Link'
 
 import { withStyles } from '@material-ui/core'
 
@@ -66,14 +61,8 @@ const AccordionDetails = withStyles((theme) => ({
   },
 }))(MuiAccordionDetails);
 
-// const cards = [
-//   { front: 'hello1', back: 'goodbye1', id: '1' },
-//   { front: 'hello2', back: 'goodbye2', id: '2' },
-//   { front: 'hello3', back: 'goodbye3', id: '3' }
-// ]
 
 const PracticeCard = () => {
-
 
   const cards = useSelector(state => state.entities.cards.byId);
   const deck = useSelector(state => state.entities.decks.activeDeck);
@@ -85,20 +74,17 @@ const PracticeCard = () => {
 
   useEffect(() => {
     dispatch(loadDeckThunk(deckId));
-    return () => dispatch(clearDeck())
-  }, [])
+    // return () => dispatch(clearDeck())
+  }, [deckId, dispatch])
+
   useEffect(() => {
     dispatch(loadCardsThunk(deckId))
     return () => dispatch(clearCards());
-  }, [deckId])
-
-
+  }, [deckId, dispatch])
 
 
   const [cardOpen, setCardOpen] = useState(false);
   const [cardIndex, setCardIndex] = useState(0);
-
-
 
   const [slideIn, setSlideIn] = useState(true);
   const [slideDirection, setSlideDirection] = useState('left');
@@ -136,7 +122,7 @@ const PracticeCard = () => {
       if (e.keyCode === 13) {
         handleChange();
       }
-      if (e.keyCode === 40 ||e.keyCode === 38) {
+      if (e.keyCode === 40 || e.keyCode === 38) {
         handleChange();
       }
     };
@@ -150,51 +136,52 @@ const PracticeCard = () => {
 
 
   return (
-    // <Paper variant="outline">
     <Grid container direction="column">
       <Typography variant="h3" component="h2">{deck.name}</Typography>
-      {/* <Typography variant="h4" component="h4">Front</Typography> */}
-      <Typography variant="h5" component="h5" color="textSecondary">{`${cardIndex + 1}/${Object.values(cards).length}`}</Typography>
-      <Grid item>
-        <Box  minHeight={500} alignItems="center" >
-          <div style={{ maxWidth: "600px", paddingTop: "50px", margin: "0 auto", color: "#494949", overflow: "hidden" }}>
-            <Grid container justify="space-between">
-              <Button onClick={() => carouselChange('left')}>Prev</Button>
-              <Button onClick={() => carouselChange('right')}>Next</Button>
-            </Grid>
-            {
-              (Object.values(cards).length) ? (
-                <Slide maxWidth="sm" in={slideIn} direction={slideDirection} timeout={200}>
+      <Typography color="textSecondary" variant="h4" component="h3">{deck.category}</Typography>
+      <Grid container>
+        <Button component={NavLink} to={`/decks/${deckId}`}>View deck</Button>
+        <Button component={NavLink} to={`/quiz/${deckId}`}>Quiz</Button>
+      </Grid>
+      {
+        (Object.values(cards).length) ? (
+          <Grid item>
+            <Box minHeight={500} alignItems="center" >
+              <div style={{ maxWidth: "600px", paddingTop: "50px", margin: "0 auto", color: "#494949", overflow: "hidden" }}>
+                <Grid container justify="space-between" alignItems="center">
+                  <Button onClick={() => carouselChange('left')}>Prev</Button>
+                  <Typography color="textSecondary">{`${cardIndex + 1}/${Object.values(cards).length}`}</Typography>
+                  <Button onClick={() => carouselChange('right')}>Next</Button>
+                </Grid>
+                <Slide in={slideIn} direction={slideDirection} timeout={200}>
                   <div>
                     <Box style={{ maxWidth: 600 }} key={Object.values(cards)[cardIndex].id}>
                       <Accordion expanded={cardOpen} onChange={handleChange}>
                         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header" >
-
-                          <Typography>
-                            <Markdown>
-                              {Object.values(cards)[cardIndex].front}
-                            </Markdown>
-                          </Typography>
+                          <Markdown>
+                            {Object.values(cards)[cardIndex].front}
+                          </Markdown>
                         </AccordionSummary>
                         <AccordionDetails style={{ verticalAlign: 'top' }}>
-                          <Typography>
-                            <Markdown>
-                              {Object.values(cards)[cardIndex].back}
-                            </Markdown>
-                          </Typography>
+                          <Markdown>
+                            {Object.values(cards)[cardIndex].back}
+                          </Markdown>
                         </AccordionDetails>
                       </Accordion>
                     </Box>
                   </div>
                 </Slide>
 
-              ) : (<CircularProgress />)
-            }
-          </div>
-        </Box>
-      </Grid>
+              </div>
+            </Box>
+          </Grid>
+        ) : (<Typography color="textSecondary">
+          {`There are no cards in this deck to practice. Why not `}
+          <Link component={NavLink} style={{ color: "secondary", textDecoration: "none" }} to={`/decks/${deckId}`}>{`add some cards`}
+          </Link>?
+        </Typography>)
+      }
     </Grid>
-    // </Paper>
   )
 }
 
