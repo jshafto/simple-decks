@@ -14,7 +14,7 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Slide from '@material-ui/core/Slide';
 import { loadCardsThunk, clearCards } from '../store/cards';
-import { loadDeckThunk,  postScoreThunk } from '../store/decks';
+import { loadDeckThunk, postScoreThunk } from '../store/decks';
 import Link from '@material-ui/core/Link'
 
 
@@ -104,8 +104,8 @@ const QuizCard = () => {
   // SCORE CORRECTLY ugh
   const [deckFinished, setDeckFinished] = useState(false);
 
-  useEffect(()=> {
-    if ((cardIndex+1)===Object.values(cards).length) {
+  useEffect(() => {
+    if ((cardIndex + 1) === Object.values(cards).length) {
       setDeckFinished(true);
     }
   }, [cardIndex, cards])
@@ -136,11 +136,11 @@ const QuizCard = () => {
     setCardOpen(false);
     const increment = 1;
     let newCardIndex;
-    if ((cardIndex+1)===Object.values(cards).length) {
-      newCardIndex=0;
+    if ((cardIndex + 1) === Object.values(cards).length) {
+      newCardIndex = 0;
 
     } else {
-      newCardIndex = (cardIndex + increment );
+      newCardIndex = (cardIndex + increment);
     }
 
     const oppDirection = 'left';
@@ -210,7 +210,7 @@ const QuizCard = () => {
                   ) :
                     (
                       <Button disabled={!answered} onClick={() => carouselChange()}>
-                        {(cardIndex+1>=Object.values(cards).length) ? "Start over" : "Next"}
+                        {(cardIndex + 1 >= Object.values(cards).length) ? "Start over" : "Next"}
                       </Button>
                     )
                   }
@@ -220,19 +220,14 @@ const QuizCard = () => {
                     <Box style={{ maxWidth: 600 }} key={Object.values(cards)[cardIndex].id}>
                       <Accordion expanded={cardOpen} onChange={handleChange}>
                         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header" >
-
-                          <Typography>
-                            <Markdown>
-                              {Object.values(cards)[cardIndex].front}
-                            </Markdown>
-                          </Typography>
+                          <Markdown>
+                            {Object.values(cards)[cardIndex].front}
+                          </Markdown>
                         </AccordionSummary>
                         <AccordionDetails style={{ verticalAlign: 'top' }}>
-                          <Typography>
-                            <Markdown>
-                              {Object.values(cards)[cardIndex].back}
-                            </Markdown>
-                          </Typography>
+                          <Markdown>
+                            {Object.values(cards)[cardIndex].back}
+                          </Markdown>
                         </AccordionDetails>
                       </Accordion>
                     </Box>
