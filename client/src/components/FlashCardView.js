@@ -11,7 +11,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button'
 import EditIcon from '@material-ui/icons/Edit';
-import CloseIcon from '@material-ui/icons/Close'
+import DeleteIcon from '@material-ui/icons/Delete'
 import IconButton from '@material-ui/core/IconButton'
 
 import { loadCardsThunk, clearCards, deleteCardThunk, setActiveCard } from '../store/cards';
@@ -67,7 +67,6 @@ const FlashCardView = () => {
     // <TableContainer component={Paper}>
     <Table className={classes.table} aria-label="flashcard-table">
       <TableHead>
-
         <TableRow>
           <TableCell align="left" width={(userId === deckCreatorId) ? "40%" : "50%"}>Front</TableCell>
           <TableCell align="left" width={(userId === deckCreatorId) ? "40%" : "50%"}>Back</TableCell>
@@ -89,7 +88,7 @@ const FlashCardView = () => {
                   <EditIcon />
                 </IconButton>
                 <IconButton id={flashcard.id} onClick={handleDelete}>
-                  <CloseIcon />
+                  <DeleteIcon />
                 </IconButton>
               </TableCell>
             ) : <TableCell />}

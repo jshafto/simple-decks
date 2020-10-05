@@ -66,6 +66,7 @@ const PracticeCard = () => {
 
   const cards = useSelector(state => state.entities.cards.byId);
   const deck = useSelector(state => state.entities.decks.activeDeck);
+  const loggedOut = useSelector(state => !state.authentication.id);
   const { deckId } = useParams();
 
 
@@ -139,10 +140,17 @@ const PracticeCard = () => {
     <Grid container direction="column">
       <Typography variant="h3" component="h2">{deck.name}</Typography>
       <Typography color="textSecondary" variant="h4" component="h3">{deck.category}</Typography>
-      <Grid container>
-        <Button component={NavLink} to={`/decks/${deckId}`}>View deck</Button>
-        <Button component={NavLink} to={`/quiz/${deckId}`}>Quiz</Button>
-      </Grid>
+      {
+        (loggedOut) ? (
+          <Grid container>
+            <Button component={NavLink} to={`/decks/${deckId}`}>View deck</Button>
+          </Grid>
+        ) : (
+            <Grid container>
+              <Button component={NavLink} to={`/decks/${deckId}`}>View deck</Button>
+              <Button component={NavLink} to={`/quiz/${deckId}`}>Quiz</Button>
+            </Grid>
+          )}
       {
         (Object.values(cards).length) ? (
           <Grid item>
