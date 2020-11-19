@@ -57,7 +57,7 @@ const EditCardModal = () => {
           <CloseIcon />
         </IconButton>
         <DialogTitle>
-          <Typography style={{ paddingRight: 20 }} variant="h6">Edit card</Typography>
+          Edit card
         </DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>
