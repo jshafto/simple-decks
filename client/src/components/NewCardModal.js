@@ -28,6 +28,8 @@ const NewCardModal = () => {
 
   const handleClose = () => {
     dispatch(closeModal());
+    setFront('');
+    setBack('');
   };
   const handleSubmit = (e) => {
     e.preventDefault();

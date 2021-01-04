@@ -133,7 +133,7 @@ const NavBar = () => {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" className={classes.navBar}>
+      <AppBar position="static" className={classes.navBar} elevation={0}>
         <Toolbar>
           <IconButton component={NavLink} to="/">
             <SvgIcon className={classes.logoicon}>

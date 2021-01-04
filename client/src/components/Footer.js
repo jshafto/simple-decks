@@ -1,50 +1,37 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link'
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+import Link from '@material-ui/core/Link';
 
 const useStyles = makeStyles(theme => ({
   footer: {
-    padding: theme.spacing(6),
+    padding: theme.spacing(3, 2),
+    marginTop: 'auto',
   }
 }))
 
 
-const Copyright = () => {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://github.com/jshafto/simple-decks">
-        simple decks
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
+
+const Links = () => (
+    <Typography variant='body2' color='textSecondary' align='center'>
+      <Link target='_blank' color='inherit' href='https://github.com/jshafto/simple-decks'>
+        Github
+      </Link>{' | '}
+      <Link target='_blank' color='inherit' href='https://github.com/jshafto/'>
+        Portfolio
+      </Link>
     </Typography>
-  );
-}
+);
+
+
 
 const Footer = () => {
   const classes = useStyles();
   return (
-    <footer className={classes.footer} >
-      {/* <Typography variant="h6" align="center" gutterBottom>
-        Footer
-      </Typography>
-      <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-        Something here to give the footer a purpose!
-      </Typography> */}
-      <Copyright />
+    <footer className={classes.footer}>
+      <Links />
     </footer>
   )
 }
 
-{/* <footer className={classes.footer}>
-<Typography variant="h6" align="center" gutterBottom>
-  Footer
-</Typography>
-<Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-  Something here to give the footer a purpose!
-</Typography>
-<Copyright />
-</footer> */}
 export default Footer

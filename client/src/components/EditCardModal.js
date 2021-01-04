@@ -9,7 +9,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
 
 import { closeModal } from '../store/ui'
 import { editCardThunk, unsetActiveCard } from '../store/cards'
@@ -57,7 +56,7 @@ const EditCardModal = () => {
           <CloseIcon />
         </IconButton>
         <DialogTitle>
-          <Typography style={{ paddingRight: 20 }} variant="h6">Edit card</Typography>
+          Edit card
         </DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>
