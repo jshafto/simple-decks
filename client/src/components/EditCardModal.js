@@ -9,7 +9,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
 
 import { closeModal } from '../store/ui'
 import { editCardThunk, unsetActiveCard } from '../store/cards'

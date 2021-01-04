@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { ThemeProvider } from '@material-ui/core/styles'
+import { ThemeProvider, makeStyles } from '@material-ui/core/styles'
 
 import Browse from './components/Browse';
 import NavBar from './components/NavBar';
@@ -19,9 +19,14 @@ import Cookies from 'js-cookie';
 
 import { createMuiTheme } from '@material-ui/core/styles';
 
-
+const useStyles = makeStyles((theme) => ({
+    site: {
+        minHeight: 'calc(100vh - 75px)',
+    },
+}));
 
 function App() {
+    const classes = useStyles();
     const darkMode = useSelector(state => state.ui.darkTheme)
     const themeType = Cookies.get('paletteType');
 
@@ -39,6 +44,7 @@ function App() {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <BrowserRouter>
+            <div className={classes.site}>
                 <NavBar />
                 <Switch>
                     <Route exact path={["/signin", "/signup"]}>
@@ -66,8 +72,9 @@ function App() {
                         <HomePlex />
                     </Route>
                 </Switch>
-            </BrowserRouter>
+                </div>
             <Footer />
+            </BrowserRouter>
         </ThemeProvider>
     );
 }
