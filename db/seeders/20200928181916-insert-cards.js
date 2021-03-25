@@ -70,8 +70,6 @@ module.exports = {
       return arr;
     };
     const cardList = await cardMaker();
-    console.log(cardList.length)
-    console.log(realCards[1])
     return queryInterface.bulkInsert('Cards', cardList, {});
   },
 
