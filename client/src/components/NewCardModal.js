@@ -28,13 +28,15 @@ const NewCardModal = () => {
 
   const handleClose = () => {
     dispatch(closeModal());
-    setFront('');
-    setBack('');
+    setFront("");
+    setBack("");
   };
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(createCardThunk(deckId, { front, back }));
     dispatch(closeModal());
+    setFront("");
+    setBack("");
   };
 
   return (

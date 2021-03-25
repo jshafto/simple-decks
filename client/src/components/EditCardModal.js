@@ -34,12 +34,16 @@ const EditCardModal = () => {
     e.preventDefault();
     dispatch(editCardThunk(cardId, { front, back }));
     dispatch(closeModal());
+    dispatch(unsetActiveCard());
   };
 
   useEffect(() => {
-    if (card) {
+    if (cardId) {
       setFront(card.front);
       setBack(card.back);
+    } else {
+      setFront("");
+      setBack("");
     }
   },[cardId, card])
 
