@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
-import { signup } from '../store/authentication';
+import { signup, login } from '../store/authentication';
 import SvgLogo from './SvgLogo';
 
 
@@ -25,7 +25,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(2, 0, 0),
+  },
+  demo: {
+    margin: theme.spacing(2, 0, 2),
   },
 }));
 
@@ -39,6 +42,11 @@ const SignupForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(signup(username, email, password));
+  };
+  
+  const demoLogin = (e) => {
+    e.preventDefault();
+    dispatch(login("demoaccount@example.com", "somethingmoresecurethanpassword"));
   };
 
 
@@ -103,7 +111,17 @@ const SignupForm = () => {
           className={classes.submit}
         >
           Sign Up
-          </Button>
+        </Button>
+        <Button
+          type="button"
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.demo}
+          onClick={demoLogin}
+        >
+          Demo Login
+        </Button>
         <Grid container>
           <Grid item>
             <Link component={NavLink} to="/signin" variant="body2">

@@ -26,19 +26,26 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(2, 0, 0),
+  },
+  demo: {
+    margin: theme.spacing(2, 0, 2),
   },
 }));
 
 const LoginForm = () => {
-  const [email, setEmail] = useState('demoaccount@example.com');
-  const [password, setPassword] = useState('somethingmoresecurethanpassword');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const classes = useStyles();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(login(email, password));
+  };
+  const demoLogin = (e) => {
+    e.preventDefault();
+    dispatch(login("demoaccount@example.com", "somethingmoresecurethanpassword"));
   };
 
   const updateEmail = e => setEmail(e.target.value);
@@ -83,10 +90,6 @@ const LoginForm = () => {
           value={password}
           onChange={updatePassword}
         />
-        {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
         <Button
           type="submit"
           fullWidth
@@ -95,13 +98,18 @@ const LoginForm = () => {
           className={classes.submit}
         >
           Sign In
-          </Button>
+        </Button>
+        <Button
+          type="button"
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.demo}
+          onClick={demoLogin}
+        >
+          Demo Login
+        </Button>
         <Grid container>
-          {/* <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid> */}
           <Grid item>
             <Link component={NavLink} to="/signup" variant="body2">
               {"Don't have an account? Sign Up"}
