@@ -14,10 +14,10 @@ const useStyles = makeStyles(theme => ({
 
 const Links = () => (
     <Typography variant='body2' color='textSecondary' align='center'>
-      <Link target='_blank' color='inherit' href='https://github.com/jshafto/simple-decks'>
+      <Link target='_blank' rel="noreferrer"color='inherit' href='https://github.com/jshafto/simple-decks'>
         Github
       </Link>{' | '}
-      <Link target='_blank' color='inherit' href='https://github.com/jshafto/'>
+      <Link target='_blank' rel="noreferrer" color='inherit' href='https://julietshafto.com'>
         Portfolio
       </Link>
     </Typography>
